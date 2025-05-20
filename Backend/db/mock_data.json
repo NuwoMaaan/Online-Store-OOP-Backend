@@ -1,0 +1,36 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Logitech Wireless Mouse",
+            "description": "Ergonomic design with long battery life",
+            "price": 29.99,
+            "stock": 20,
+            "category": "Accessories"
+        },
+        {
+            "id": 2,
+            "name": "Lenovo ThinkPad X1",
+            "description": "Business-class ultrabook with Intel i7 processor",
+            "price": 1499.99,
+            "stock": 6,
+            "category": "Laptops"
+        },
+        {
+            "id": 3,
+            "name": "Samsung Galaxy S24",
+            "description": "Latest flagship phone with AMOLED display",
+            "price": 999.99,
+            "stock": 15,
+            "category": "Mobiles"
+        },
+        {
+            "id": 3,
+            "name": "Samsung Galaxy S24",
+            "description": "Latest flagship phone with AMOLED display",
+            "price": 999.99,
+            "stock": 15,
+            "category": "Mobiles"
+        }
+    ]
+}
