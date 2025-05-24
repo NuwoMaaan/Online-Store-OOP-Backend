@@ -2,21 +2,19 @@ from PaymentMethod import PaymentMethod
 from CardPayment import CardPayment
 
 class CardPaymentMethod(PaymentMethod):
-    def __init__(self, amount: float, card_holder: str, card_number: str, expiry_date: str):
-        self.amount = amount
-        self.card_holder = card_holder
-        self.card_number = card_number
-        self.expiry_date = expiry_date
+    def __init__(self):
+        pass
 
-    def create_payment(self) -> CardPayment:
-        return CardPayment(self.amount, self.card_holder, self.card_number, self.expiry_date)
+    def create_payment(self, amount, card_holder, card_number, expiry_date) -> CardPayment:
+        if not card_number.isdigit() or len(card_number) not in [13, 15, 16]:
+            raise ValueError("Invalid card number. Must be numeric and 13-16 digits.")
+        if len(expiry_date) != 5 or expiry_date[2] != '/':
+            raise ValueError("Invalid expiry date format. Use MM/YY.")
+        if float(amount) <= 0:
+            raise ValueError("Amount must be positive.")
+        return CardPayment(float(amount), card_holder, card_number, expiry_date)
     
-    #override
-    def validate(self):
-        if not self.card_holder or not self.card_number or not self.expiry_date:
-            raise ValueError("Card holder, card number, and expiry date must be provided.")
-        if len(self.card_number) != 16 or not self.card_number.isdigit():
-            raise ValueError("Card number must be a 16-digit number.")
-        if self.amount <= 0:
-            raise ValueError("Payment amount must be greater than zero.")
-        # Additional validation for expiry date can be added here
+    def get_fields(self):
+        return ["amount", "card_holder", "card_number", "expiry_date"]
+    
+    
