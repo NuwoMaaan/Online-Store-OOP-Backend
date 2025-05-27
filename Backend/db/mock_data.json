@@ -31,6 +31,14 @@
             "price": 999.99,
             "stock": 15,
             "category": "Mobiles"
+        },
+        {
+            "id": 101,
+            "name": "Wireless Mouse",
+            "description": "Bluetooth ergonomic mouse",
+            "price": 49.99,
+            "stock": 100,
+            "category": "Accessories"
         }
     ]
 }
