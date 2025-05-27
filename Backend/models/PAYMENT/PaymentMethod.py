@@ -6,10 +6,6 @@ class PaymentMethod(ABC):
     def create_payment(self) -> IPayment:
         pass
 
-    # @abstractmethod
-    # def validate(self) -> None:
-    #     pass
-
     def process_payment(self, **kwargs):
         payment = self.create_payment(**kwargs)
         payment.pay()

@@ -1,4 +1,5 @@
 from Payment import IPayment
+from datetime import datetime
 
 class CardPayment(IPayment):
     def __init__(self, amount: float, card_holder: str, card_number: str, expiry_date: str):
@@ -7,8 +8,21 @@ class CardPayment(IPayment):
         self.card_number = card_number
         self.expiry_date = expiry_date
 
-    #override 
+    #validate business logic
+    def validate(self) -> None:
+        if self.amount <= 0:
+            raise ValueError("Amount must be positive.")
+        if not self.card_number.isdigit() or len(self.card_number) not in [13, 15, 16]:
+            raise ValueError("Invalid card number.")
+        if self._is_expired():
+            raise ValueError("Card is expired.")
+
+    def is_expired(self) -> bool:
+        try:
+            exp = datetime.strptime(self.expiry_date, "%m/%y")
+            return exp < datetime.now().replace(day=1)
+        except ValueError:
+            raise ValueError("Invalid expiry date format. Use MM/YY.")
+
     def pay(self) -> None:
-        print(f"Processing card payment of ${self.amount:.2f} for {self.card_holder}, "
-              f"card ending in {self.card_number[-4:]}, expires {self.expiry_date}.")
-        #payment processing logic would go here
+        print(f"Charging ${self.amount:.2f} to card ending in {self.card_number[-4:]}.")
