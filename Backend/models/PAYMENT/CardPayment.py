@@ -1,4 +1,4 @@
-from Payment import IPayment
+from models.PAYMENT.Payment import IPayment
 from datetime import datetime
 
 class CardPayment(IPayment):
@@ -14,7 +14,7 @@ class CardPayment(IPayment):
             raise ValueError("Amount must be positive.")
         if not self.card_number.isdigit() or len(self.card_number) not in [13, 15, 16]:
             raise ValueError("Invalid card number.")
-        if self._is_expired():
+        if self.is_expired():
             raise ValueError("Card is expired.")
 
     def is_expired(self) -> bool:

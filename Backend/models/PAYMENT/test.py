@@ -15,6 +15,7 @@ def read_factory():
 def get_user_input(factory):
     kwargs = {}
     for field in factory.get_fields():
+        # Need to implement function that gets amount from Order class automatically - User does not input amount.
         value = input(f"Enter {field.replace('_', ' ')}: ")
         kwargs[field] = value
     return kwargs

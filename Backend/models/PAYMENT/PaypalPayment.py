@@ -1,4 +1,4 @@
-from Payment import IPayment
+from models.PAYMENT.Payment import IPayment
 
 class PaypalPayment(IPayment):
     def __init__(self, amount: float, email: str):

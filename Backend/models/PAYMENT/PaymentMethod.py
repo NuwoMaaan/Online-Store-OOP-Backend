@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Payment import IPayment
+from models.PAYMENT.Payment import IPayment
 
 class PaymentMethod(ABC):
     @abstractmethod

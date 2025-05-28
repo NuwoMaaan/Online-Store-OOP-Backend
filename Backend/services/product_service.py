@@ -1,5 +1,3 @@
-# services/product_service.py
-
 import json
 from models.product import Product
 

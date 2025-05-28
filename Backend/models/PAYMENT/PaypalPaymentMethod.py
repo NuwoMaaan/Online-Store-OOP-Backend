@@ -1,5 +1,5 @@
-from PaymentMethod import PaymentMethod
-from PaypalPayment import PaypalPayment
+from models.PAYMENT.PaymentMethod import PaymentMethod
+from models.PAYMENT.PaypalPayment import PaypalPayment
 
 email_valid = ['@gmail.com','@yahoo.com','@hotmail.com', '@outlook.com', '@icloud.com']
 
@@ -9,6 +9,7 @@ class PaypalPaymentMethod(PaymentMethod):
 
     def get_fields(self):
         return ["amount", "email"]
+    
 
     def create_payment(self, amount, email) -> PaypalPayment:
         if not any(email.endswith(domain) for domain in email_valid):

@@ -1,5 +1,5 @@
-from CardPayment import CardPayment
-from PaymentMethod import PaymentMethod
+from models.PAYMENT.CardPayment import CardPayment
+from models.PAYMENT.PaymentMethod import PaymentMethod
 
 class CardPaymentMethod(PaymentMethod):
     def __init__(self):
