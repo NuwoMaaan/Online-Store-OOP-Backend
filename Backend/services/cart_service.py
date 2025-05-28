@@ -1,4 +1,3 @@
-
 import json
 from models.cart import Cart
 
@@ -27,13 +26,13 @@ class CartService:
         self.carts.append(new_cart)
         return new_cart
 
-    def add_to_cart(self, user_id: int, product_id: int, quantity: int):
+    def add_to_cart(self, user_id: int, product_id: str, price: float, quantity: int = 1):
         cart = self.get_cart_by_user_id(user_id)
-        cart.add_item(product_id, quantity)
+        cart.add_item(product_id, price, quantity)
         self.save_carts()
         return cart
 
-    def remove_from_cart(self, user_id: int, product_id: int):
+    def remove_from_cart(self, user_id: int, product_id: str):
         cart = self.get_cart_by_user_id(user_id)
         cart.remove_item(product_id)
         self.save_carts()

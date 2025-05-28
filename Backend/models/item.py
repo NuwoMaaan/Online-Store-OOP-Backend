@@ -1,6 +1,7 @@
 # models/product.py
+from pydantic import BaseModel
+class Item(BaseModel):
 
-class Product:
     def __init__(self, id: int, name: str, description: str, price: float, stock: int, category: str):
         self.id = id
         self.name = name

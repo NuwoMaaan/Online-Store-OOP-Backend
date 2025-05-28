@@ -6,7 +6,7 @@ from services.payment_service import PaymentService
 
 from pydantic import BaseModel
 class CardPaymentRequest(BaseModel):
-    amount: float
+    order_id: int
     card_holder: str
     card_number: str
     expiry_date: str
@@ -24,8 +24,8 @@ router = APIRouter()
 def pay_by_card(payload: CardPaymentRequest):
     try:
         service = PaymentService(CardPaymentMethod())
-        service.process_payment(payload.model_dump())
-        return {"status": "success"}
+        salesdoc = service.process_payment(payload.model_dump())
+        return {"status": "success", "sale_id": salesdoc.id}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 

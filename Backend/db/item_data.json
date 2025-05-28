@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "name": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse",
+      "price": 25.99,
+      "stock": 100,
+      "category": "Electronics"
+    }
+  ]
+}

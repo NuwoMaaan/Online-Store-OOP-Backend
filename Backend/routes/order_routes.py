@@ -1,28 +1,37 @@
-
-
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from typing import List, Tuple
 from services.order_service import OrderService
+from models.item import Item
 
 router = APIRouter()
-order_service = OrderService()
+service = OrderService()
 
-@router.post("/place/{user_id}", summary="Place an order for the user")
-def place_order(user_id: int):
+class CartData(BaseModel):
+    customer_id: int
+    items: List[Item]
+
+class OrderRequest(BaseModel):
+    cart: CartData
+    shipping_address: str
+    shipping_cost: float
+
+@router.post("/orders")
+def create_order(order: OrderRequest):
     try:
-        order = order_service.place_order(user_id)
-        return {"message": "Order placed successfully", "order": order.to_dict()}
-    except ValueError as e:
+        new_order = service.create_order_from_cart(
+            cart_data=order.cart.model_dump(),
+            shipping_address=order.shipping_address,
+            shipping_cost=order.shipping_cost
+        )
+        return {"order_id": new_order.order_id}
+    except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/{order_id}", summary="Get an order by ID")
-def get_order(order_id: int):
-    order = order_service.get_order_by_id(order_id)
-    if order:
-        return order.to_dict()
-    raise HTTPException(status_code=404, detail="Order not found")
-
-@router.get("/user/{user_id}", summary="Get all orders by user")
-def get_orders_by_user(user_id: int):
-    orders = order_service.get_orders_by_user(user_id)
-    return [o.to_dict() for o in orders]
-
+@router.post("/orders/{order_id}/salesdoc")
+def generate_sales_doc(order_id: int):
+    try:
+        doc = service.generate_sales_doc(order_id)
+        return {"sales_doc_id": doc.id}
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

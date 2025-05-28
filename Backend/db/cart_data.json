@@ -1,13 +1,19 @@
 {
-    "carts": [
+  "carts": [
+    {
+      "user_id": 1,
+      "items": [
         {
-            "user_id": 1,
-            "items": [
-                {
-                    "product_id": 101,
-                    "quantity": 2
-                }
-            ]
+          "item_id": "abc123",
+          "price": 9.99,
+          "quantity": 2
+        },
+        {
+          "item_id": "def456",
+          "price": 15.5,
+          "quantity": 1
         }
-    ]
+      ]
+    }
+  ]
 }

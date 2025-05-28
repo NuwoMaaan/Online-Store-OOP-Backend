@@ -1,7 +1,6 @@
-
-
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 from services.cart_service import CartService
 
 router = APIRouter()
@@ -9,20 +8,29 @@ cart_service = CartService()
 
 class AddToCartRequest(BaseModel):
     user_id: int
-    product_id: int
-    quantity: int
+    product_id: str
+    price: float = Field(..., gt=0, description="Price must be positive")
+    quantity: Optional[int] = Field(1, gt=0, description="Quantity must be at least 1")
 
 class RemoveFromCartRequest(BaseModel):
     user_id: int
-    product_id: int
+    product_id: str
 
 class ClearCartRequest(BaseModel):
     user_id: int
 
 @router.post("/add", summary="Add product to cart")
 def add_to_cart(request: AddToCartRequest):
-    cart = cart_service.add_to_cart(request.user_id, request.product_id, request.quantity)
-    return {"message": "Product added to cart", "cart": cart.to_dict()}
+    try:
+        cart = cart_service.add_to_cart(
+            user_id=request.user_id,
+            product_id=request.product_id,
+            price=request.price,
+            quantity=request.quantity or 1
+        )
+        return {"message": "Product added to cart", "cart": cart.to_dict()}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.post("/remove", summary="Remove product from cart")
 def remove_from_cart(request: RemoveFromCartRequest):
@@ -38,4 +46,3 @@ def clear_cart(request: ClearCartRequest):
 def get_cart(user_id: int):
     cart = cart_service.get_cart_by_user_id(user_id)
     return cart.to_dict()
-
