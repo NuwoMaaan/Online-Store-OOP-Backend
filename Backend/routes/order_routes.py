@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Tuple
 from services.order_service import OrderService
 from models.item import Item
+from models.cart_item import CartItem
 
 router = APIRouter()
 service = OrderService()
