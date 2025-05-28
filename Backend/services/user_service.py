@@ -1,3 +1,4 @@
+
 import json
 from models.user import User
 
@@ -30,3 +31,4 @@ class UserService:
             if user.email == email and user.check_password(password):
                 return user
         raise ValueError("Invalid email or password.")
+

@@ -1,4 +1,5 @@
 
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from models.user import User
@@ -36,3 +37,4 @@ def login_user(request: UserLoginRequest):
         return {"message": f"Welcome back, {user.name}!", "user": user.to_dict()}
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
+

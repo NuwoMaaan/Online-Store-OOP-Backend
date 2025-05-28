@@ -1,4 +1,5 @@
 
+
 from fastapi import APIRouter, HTTPException
 from services.order_service import OrderService
 
@@ -24,3 +25,4 @@ def get_order(order_id: int):
 def get_orders_by_user(user_id: int):
     orders = order_service.get_orders_by_user(user_id)
     return [o.to_dict() for o in orders]
+
