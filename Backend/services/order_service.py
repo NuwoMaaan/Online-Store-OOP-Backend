@@ -1,4 +1,3 @@
-# services/order_service.py
 
 import json
 from models.order import Order, OrderItem

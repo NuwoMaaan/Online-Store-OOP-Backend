@@ -1,25 +1,20 @@
-from PaymentMethod import PaymentMethod
-from PaypalPayment import PaypalPayment
+from models.PAYMENT.PaymentMethod import PaymentMethod
+from models.PAYMENT.PaypalPayment import PaypalPayment
+
+email_valid = ['@gmail.com','@yahoo.com','@hotmail.com', '@outlook.com', '@icloud.com']
 
 class PaypalPaymentMethod(PaymentMethod):
     def __init__(self):
         pass
-        
-    def create_payment(self, amount, email) -> PaypalPayment:
-        if not email or "@" not in email:
-            raise ValueError("Invalid email address.")
-        if float(amount) <= 0:
-            raise ValueError("Amount must be positive.")
-        return PaypalPayment(float(amount), email)
 
-    
     def get_fields(self):
         return ["amount", "email"]
-
-    # #override
-    # def validate(self) -> None:
-    #     if not self.email or "@" not in self.email:
-    #         raise ValueError("Invalid email address for PayPal payment.")
-    #     if self.amount <= 0:
-    #         raise ValueError("Payment amount must be greater than zero.")
     
+
+    def create_payment(self, amount, email) -> PaypalPayment:
+        if not any(email.endswith(domain) for domain in email_valid):
+            raise ValueError(f"Email must end with one of the following: {', '.join(email_valid)}")
+        if "@" not in email:
+            raise ValueError("Invalid email format.")
+        return PaypalPayment(float(amount), email)
+

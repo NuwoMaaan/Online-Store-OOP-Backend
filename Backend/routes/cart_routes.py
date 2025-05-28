@@ -1,4 +1,4 @@
-# routes/cart_routes.py
+
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -38,3 +38,4 @@ def clear_cart(request: ClearCartRequest):
 def get_cart(user_id: int):
     cart = cart_service.get_cart_by_user_id(user_id)
     return cart.to_dict()
+

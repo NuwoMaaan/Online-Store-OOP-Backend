@@ -1,4 +1,3 @@
-# services/cart_service.py
 
 import json
 from models.cart import Cart
