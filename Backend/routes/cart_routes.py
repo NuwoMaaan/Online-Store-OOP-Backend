@@ -8,34 +8,34 @@ cart_service = CartService()
 
 class AddToCartRequest(BaseModel):
     user_id: int
-    product_id: str
+    item_id: str
     price: float = Field(..., gt=0, description="Price must be positive")
     quantity: Optional[int] = Field(1, gt=0, description="Quantity must be at least 1")
 
 class RemoveFromCartRequest(BaseModel):
     user_id: int
-    product_id: str
+    item_id: str
 
 class ClearCartRequest(BaseModel):
     user_id: int
 
-@router.post("/add", summary="Add product to cart")
+@router.post("/add", summary="Add item to cart")
 def add_to_cart(request: AddToCartRequest):
     try:
         cart = cart_service.add_to_cart(
             user_id=request.user_id,
-            product_id=request.product_id,
+            item_id=request.item_id,
             price=request.price,
             quantity=request.quantity or 1
         )
-        return {"message": "Product added to cart", "cart": cart.to_dict()}
+        return {"message": "item added to cart", "cart": cart.to_dict()}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/remove", summary="Remove product from cart")
+@router.post("/remove", summary="Remove item from cart")
 def remove_from_cart(request: RemoveFromCartRequest):
-    cart = cart_service.remove_from_cart(request.user_id, request.product_id)
-    return {"message": "Product removed from cart", "cart": cart.to_dict()}
+    cart = cart_service.remove_from_cart(request.user_id, request.item_id)
+    return {"message": "item removed from cart", "cart": cart.to_dict()}
 
 @router.post("/clear", summary="Clear user's cart")
 def clear_cart(request: ClearCartRequest):

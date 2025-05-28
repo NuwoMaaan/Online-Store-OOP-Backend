@@ -1,12 +1,25 @@
 {
-    "users": [
+    "staff_users": [
         {
-            "id": 1,
-            "name": "Ayush",
+            "user_id": 1,
+            "username": "Ayush",
             "email": "ayush@example.com",
-            "address": "123 Tech Street",
-            "is_admin": false,
             "password": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae"
+        }
+    ]
+    ,
+    "customer_users": [
+        {
+            "user_id": 2,
+            "username": "JohnDoe",
+            "email": "john@outlook.com",
+            "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+            "shipping_details": {
+                "address": "123 Main St Hawthorne",
+                "city": "Melbourne",
+                "state": "VIC",
+                "postcode_code": "3122"
+            }
         }
     ]
 }

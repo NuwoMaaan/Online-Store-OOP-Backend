@@ -6,7 +6,7 @@ class SalesDoc:
     DATA_PATH = Path("database/sales_docs.json")
 
     def __init__(self, doc_id: int, order_id: int, customer_id: int, amount: float):
-        self.id = doc_id
+        self.doc_id = doc_id
         self.order_id = order_id
         self.customer_id = customer_id
         self.amount = amount

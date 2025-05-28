@@ -6,13 +6,12 @@ from models.item import Item
 
 class Order:
     DATA_PATH = Path("database/orders.json")
-
-    def __init__(self, order_id: int, customer_id: int, items: List[Item], shipping_address: str, shipping_cost: float):
+    def __init__(self, order_id: int, customer_id: int, items: List[Item], shipping_address: str):
         self.order_id = order_id
         self.customer_id = customer_id
         self.items = items
         self.shipping_address = shipping_address
-        self.shipping_cost = shipping_cost
+        self.shipping_cost = 10.00  
 
     def calculate_total(self) -> float:
         return sum(price for _, price in self.items) + self.shipping_cost

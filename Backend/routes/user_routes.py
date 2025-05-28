@@ -24,7 +24,7 @@ class UserLoginRequest(BaseModel):
 @router.post("/register", summary="Register a new user")
 def register_user(request: UserRegisterRequest):
     try:
-        user = User.from_dict(request.dict())
+        user = User.from_dict(request.model_dump())
         created_user = user_service.register(user)
         return {"message": "User registered successfully", "user": created_user.to_dict()}
     except ValueError as e:

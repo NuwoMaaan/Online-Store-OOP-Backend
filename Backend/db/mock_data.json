@@ -1,7 +1,7 @@
 {
-    "products": [
+    "items": [
         {
-            "id": 1,
+            "item_id": "i1",
             "name": "Logitech Wireless Mouse",
             "description": "Ergonomic design with long battery life",
             "price": 29.99,
@@ -9,7 +9,7 @@
             "category": "Accessories"
         },
         {
-            "id": 2,
+            "item_id": "i2",
             "name": "Lenovo ThinkPad X1",
             "description": "Business-class ultrabook with Intel i7 processor",
             "price": 1499.99,
@@ -17,7 +17,7 @@
             "category": "Laptops"
         },
         {
-            "id": 3,
+            "item_id": "i3",
             "name": "Samsung Galaxy S24",
             "description": "Latest flagship phone with AMOLED display",
             "price": 999.99,
@@ -25,7 +25,7 @@
             "category": "Mobiles"
         },
         {
-            "id": 3,
+            "item_id": "i4",
             "name": "Samsung Galaxy S24",
             "description": "Latest flagship phone with AMOLED display",
             "price": 999.99,
@@ -33,7 +33,7 @@
             "category": "Mobiles"
         },
         {
-            "id": 101,
+            "item_id": "i5",
             "name": "Wireless Mouse",
             "description": "Bluetooth ergonomic mouse",
             "price": 49.99,

@@ -2,8 +2,8 @@
 from pydantic import BaseModel
 class Item(BaseModel):
 
-    def __init__(self, id: int, name: str, description: str, price: float, stock: int, category: str):
-        self.id = id
+    def __init__(self, item_id: int, name: str, description: str, price: float, stock: int, category: str):
+        self.item_id = item_id
         self.name = name
         self.description = description
         self.price = price
@@ -21,7 +21,7 @@ class Item(BaseModel):
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "item_id": self.item_id,
             "name": self.name,
             "description": self.description,
             "price": self.price,
@@ -32,7 +32,7 @@ class Item(BaseModel):
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            id=data["id"],
+            item_id=data["item_id"],
             name=data["name"],
             description=data["description"],
             price=data["price"],

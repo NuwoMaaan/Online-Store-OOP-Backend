@@ -13,7 +13,7 @@ def get_items():
     return [p.to_dict() for p in items]
 
 @router.get("/{item_id}", summary="Get a item by ID")
-def get_item(item_id: int):
+def get_item(item_id: str):
     item = item_service.get_item_by_id(item_id)
     if item:
         return item.to_dict()
@@ -29,7 +29,7 @@ def add_item(item: dict):
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.put("/{item_id}/reduce-stock", summary="Reduce stock for a item")
-def reduce_item_stock(item_id: int, quantity: int):
+def reduce_item_stock(item_id: str, quantity: int):
     try:
         updated_item = item_service.reduce_stock(item_id, quantity)
         return {
