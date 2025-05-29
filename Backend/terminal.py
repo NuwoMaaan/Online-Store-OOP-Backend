@@ -48,7 +48,7 @@ def menu(user):
     elif choice == "2":
         view_cart(user)
     elif choice == "3":
-        checkout(user)
+        check_out(user)
     elif choice == "4":
         print("Exiting Menu")
     else:
@@ -90,7 +90,8 @@ def view_cart(user: Customer):
     print("\nItems in your cart:")
     for item in cart.items:
         print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
-        menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
+        
+    menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
     if menu_choice == 'r':
         item_id = input("Enter item ID to remove: ").strip()
         try:
@@ -101,25 +102,36 @@ def view_cart(user: Customer):
         except ValueError:
             print("Invalid item ID. Please enter a valid number.")
     elif menu_choice == 'c':
-        checkout(user)
+        check_out(user)
+    else:
+        print("Returning to main menu.")
+        menu(user)
 
 
 ################does not work yet#####################
-def checkout(user: Customer):
-    address = input("Enter shipping address: ")
-    city = input("Enter city: ")
-    postal_code = input("Enter postal code: ")
+def check_out(user: Customer):
+    cart = user.cart
+    cart_items = cart.get_items()
+    if not cart_items:
+        print("Your cart is empty. Please add items to your cart before checking out.")
+        return menu(user)
+    print("\nCheckout:")
+    print("Items in your cart:")
+    for item in cart_items:
+        print(f"- {item.name}: ${item.price:.2f}")
+    total = cart.get_total()
+    print(f"Sub Total: ${total:.2f}")
 
-    cart = Cart(user.user_id)
-    shipping_details = cart.get_shipping_details(address, city, postal_code)
+    shipping_details = cart.get_shipping_details()
+    order = cart.checkout(shipping_details)
+    user.orders.append(order)  
 
-    order = cart.checkout(user.user_id, shipping_details)
-    
     print("\nOrder Summary:")
     print(f"Customer ID: {order.customer_id}")
     for item in order.items:
         print(f"- {item.name}: ${item.price:.2f}")
-    print(f"Total: ${order.total:.2f}")
+    print(f"Total: ${order.total:.2f}") 
+
 #########################################################################
 
 def login():

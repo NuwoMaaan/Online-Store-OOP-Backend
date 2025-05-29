@@ -1,5 +1,6 @@
 from models.cart import Cart
-
+from models.order import Order
+from typing import List
 
 class User:
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str):
@@ -13,6 +14,7 @@ class Customer(User):
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str = "customer"):
         super().__init__(user_id, username, email, role, password)
         self.cart = Cart(user_id)
+        self.orders = []  # List of Order objects
 
 
 

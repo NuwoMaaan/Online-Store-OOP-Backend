@@ -22,7 +22,10 @@ class Cart:
     def to_dict(self):
         return [item.to_dict() for item in self.items]
     
-    def get_shipping_details(self, address: str, city: str, postal_code: str):
+    def get_shipping_details(self):
+        address = input("Enter shipping address: ")
+        city = input("Enter city: ")
+        postal_code = input("Enter postal code: ")
         return {
             "address": address,
             "city": city,
@@ -30,15 +33,11 @@ class Cart:
         }
         
 
-    def checkout(self, customer_id, shipping_details):
-            total = self.get_total()
-            # order = {
-            #     "customer_id": self.customer_id,
-            #     "items": self.to_dict(),
-            #     "total": total
-            # }
+    def checkout(self, shipping_details):
+        order = Order(self.customer_id, self.items.copy(), shipping_details)
+        self.items: List[Item] = []  # Clear cart after checkout
+        return order
+    
 
-            
-            order = Order(customer_id, shipping_details,)
-            self.items = []
-            return order
+
+    
