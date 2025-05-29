@@ -4,8 +4,6 @@ class Item(BaseModel):
     item_id: int
     name: str
     price: float
-    
- 
 
     @classmethod
     def from_dict(cls, data: dict):

@@ -1,6 +1,6 @@
 from typing import List
 from models.item import Item
-from order import Order
+from models.order import Order
 
 class Cart:
     def __init__(self, customer_id: int):
