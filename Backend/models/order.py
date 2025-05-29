@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import json
 from pathlib import Path
 from typing import List, Tuple
@@ -53,3 +54,21 @@ class Order:
             json.dump(orders, f, indent=2)
 
         return cls(new_id, cart.customer_id, cart.get_items(), shipping_address, shipping_cost)
+=======
+
+
+class Order:
+    def __init__(self, customer_id, items, shipping_details):
+        self.customer_id = customer_id
+        self.items = items # List of Item objects
+        self.shipping_details = shipping_details
+        self.subtotal = sum(item.price for item in items)
+        self.shipping_cost = 10.0
+        self.total = self.subtotal + self.shipping_cost
+        self.status = "pending"  # or "paid", "refund", "cancelled"
+        self.payment = None      # IPayment object
+
+    def add_payment(self, payment):
+        self.payment = payment
+        self.status = "paid"
+>>>>>>> Stashed changes

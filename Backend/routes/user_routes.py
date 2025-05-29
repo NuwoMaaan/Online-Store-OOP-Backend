@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 
 from fastapi import APIRouter, HTTPException
@@ -38,3 +39,5 @@ def login_user(request: UserLoginRequest):
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
 
+=======
+>>>>>>> Stashed changes

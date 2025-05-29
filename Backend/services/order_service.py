@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from models.order import Order
 from models.Saledoc import SalesDoc
 from models.cart import Cart
@@ -10,6 +11,20 @@ class OrderService:
             item = Item(item_id=item_data["item_id"], price=item_data["price"])
             cart.add_item(item)
         return Order.create_from_cart(cart, shipping_address, shipping_cost)
+=======
+
+import json
+from models.order import Order, OrderItem
+from services.cart_service import CartService
+from services.item_service import ItemService
+
+class OrderService:
+    def __init__(self, db_path="db/order_data.json"):
+        self.db_path = db_path
+        self.orders = self.load_orders()
+        self.cart_service = CartService()
+        self.product_service = ItemService()
+>>>>>>> Stashed changes
 
     def get_order(self, order_id):
         return Order.get_by_id(order_id)

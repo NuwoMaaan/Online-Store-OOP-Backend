@@ -1,44 +1,49 @@
 {
     "items": [
         {
+<<<<<<< Updated upstream
             "item_id": "i1",
+=======
+            "item_id": 1,
+>>>>>>> Stashed changes
             "name": "Logitech Wireless Mouse",
-            "description": "Ergonomic design with long battery life",
-            "price": 29.99,
-            "stock": 20,
-            "category": "Accessories"
+            "price": 29.99
         },
         {
+<<<<<<< Updated upstream
             "item_id": "i2",
+=======
+            "item_id": 2,
+>>>>>>> Stashed changes
             "name": "Lenovo ThinkPad X1",
-            "description": "Business-class ultrabook with Intel i7 processor",
-            "price": 1499.99,
-            "stock": 6,
-            "category": "Laptops"
+            "price": 1499.99
         },
         {
+<<<<<<< Updated upstream
             "item_id": "i3",
+=======
+            "item_id": 3,
+>>>>>>> Stashed changes
             "name": "Samsung Galaxy S24",
-            "description": "Latest flagship phone with AMOLED display",
-            "price": 999.99,
-            "stock": 15,
-            "category": "Mobiles"
+            "price": 999.99
         },
         {
+<<<<<<< Updated upstream
             "item_id": "i4",
+=======
+            "item_id": 3,
+>>>>>>> Stashed changes
             "name": "Samsung Galaxy S24",
-            "description": "Latest flagship phone with AMOLED display",
-            "price": 999.99,
-            "stock": 15,
-            "category": "Mobiles"
+            "price": 999.99
         },
         {
+<<<<<<< Updated upstream
             "item_id": "i5",
+=======
+            "item_id": 101,
+>>>>>>> Stashed changes
             "name": "Wireless Mouse",
-            "description": "Bluetooth ergonomic mouse",
-            "price": 49.99,
-            "stock": 100,
-            "category": "Accessories"
+            "price": 49.99
         }
     ]
 }

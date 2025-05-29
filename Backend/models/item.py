@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 from pydantic import BaseModel
 
@@ -20,7 +21,23 @@ class Item(BaseModel):
 
     def to_dict(self):
         return self.model_dump
+=======
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    item_id: int
+    name: str
+    price: float
+    
+ 
+>>>>>>> Stashed changes
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(**data)
+<<<<<<< Updated upstream
+=======
+
+    def to_dict(self):
+        return self.model_dump()
+>>>>>>> Stashed changes

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import json
 from models.cart import Cart
 
@@ -43,3 +44,5 @@ class CartService:
         cart.clear_cart()
         self.save_carts()
         return cart
+=======
+>>>>>>> Stashed changes

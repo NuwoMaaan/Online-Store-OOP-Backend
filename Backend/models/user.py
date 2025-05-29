@@ -1,22 +1,20 @@
-from abc import ABC, abstractmethod
+from models.cart import Cart
 
-class User(ABC):
-    def __init__(self, id: int, name: str, email: str, password: str, address: str, is_admin: bool = False):
-        self.id = id
+
+class User:
+    def __init__(self, user_id: int, name: str, email: str, role: str):
+        self.user_id = user_id
         self.name = name
+        self.role = role
         self.email = email
-        self.password = password  
-        self.address = address
-        self.is_admin = is_admin
 
-    @abstractmethod
-    def to_dict(self):
-        pass
+class Customer(User):
+    def __init__(self, user_id: int, name: str, email: str, role: str = "customer"):
+        super().__init__(user_id, name, email, role)
+        self.cart = Cart(user_id)
 
-    @abstractmethod
-    def from_dict(self, data):
-        pass
 
-    @abstractmethod
-    def check_password(self, password: str) -> bool:
-        pass
+
+class Staff(User):
+    def __init__(self, user_id: int, name: str, email: str, role: str = "staff"):
+        super().__init__(user_id, name, email, role)
