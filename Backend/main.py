@@ -1,9 +1,5 @@
 from fastapi import FastAPI
-<<<<<<< Updated upstream
-from routes.item_routes import router as item_router
-=======
 from Backend.routes.item_routes import router as product_router
->>>>>>> Stashed changes
 from routes.user_routes import router as user_router
 from routes.cart_routes import router as cart_router  
 from routes.order_routes import router as order_router

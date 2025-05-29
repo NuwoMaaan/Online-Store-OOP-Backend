@@ -38,7 +38,7 @@ class Cart:
             #     "total": total
             # }
 
-            shipping_details = get_shipping_details()
+            
             order = Order(customer_id, shipping_details,)
             self.items = []
             return order

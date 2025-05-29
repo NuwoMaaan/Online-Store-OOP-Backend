@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 
 
 from fastapi import APIRouter, HTTPException
@@ -25,7 +24,7 @@ class UserLoginRequest(BaseModel):
 @router.post("/register", summary="Register a new user")
 def register_user(request: UserRegisterRequest):
     try:
-        user = User.from_dict(request.model_dump())
+        user = User.from_dict(request.dict())
         created_user = user_service.register(user)
         return {"message": "User registered successfully", "user": created_user.to_dict()}
     except ValueError as e:
@@ -39,5 +38,3 @@ def login_user(request: UserLoginRequest):
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
 
-=======
->>>>>>> Stashed changes
