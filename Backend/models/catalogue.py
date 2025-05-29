@@ -31,12 +31,11 @@ class Catalogue:
     
     def view_catalogue(self):
         print(f"------Catalogue------")
-        #catalogue = Catalogue.get_instance()
         items = self.get_all_items()
         if not items:
             print("No items available in the catalogue.")
             return
-        print("\nCatalogue Items:")
+        print("Catalogue Items:")
         for item in items:
             print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
         

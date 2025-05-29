@@ -1,8 +1,9 @@
 from models.cart import Cart
 from models.order import Order
 from typing import List
+from abc import ABC
 
-class User:
+class User(ABC):
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str):
         self.user_id = user_id
         self.username = username

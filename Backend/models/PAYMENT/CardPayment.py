@@ -25,4 +25,4 @@ class CardPayment(IPayment):
             raise ValueError("Invalid expiry date format. Use MM/YY.")
 
     def pay(self) -> None:
-        print(f"Charging ${self.amount:.2f} to card ending in {self.card_number[-4:]}.")
+        print(f"Charging ${self.amount:.2f} to card ending in {self.card_number[-4:]}.\n")

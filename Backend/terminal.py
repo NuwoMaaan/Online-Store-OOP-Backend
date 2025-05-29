@@ -1,4 +1,4 @@
-from models.user import Customer
+from models.user import Customer, Staff
 from models.catalogue import Catalogue
 from models.cart import Cart
 from models.item import Item
@@ -9,6 +9,7 @@ from models.PAYMENT import PaypalPayment
 from models.PAYMENT import PaymentMethod
 from models.PAYMENT import CardPaymentMethod
 from models.PAYMENT import PaypalPaymentMethod
+from services import terminal_payment_service as payment
 import json
 
 
@@ -79,6 +80,8 @@ def menu(user):
                 order = user.cart.checkout()
                 order.order_summary()
                 user.orders.append(order)
+                payment_factory, kwargs = payment.create_payment_factory(order)
+                payment.process_payment(payment_factory, kwargs)
                 break
             elif menu_choice == 'q':
                 break
@@ -90,7 +93,8 @@ def menu(user):
         order = user.cart.checkout()
         order.order_summary()
         user.orders.append(order)
-    
+        payment_factory, kwargs = payment.create_payment_factory(order)
+        payment.process_payment(payment_factory, kwargs)
     elif choice == "4":
         print("Exiting Menu")
     else:
@@ -100,18 +104,22 @@ def menu(user):
 def login():
     username = input("Enter username: ")
     password = input("Enter password: ")
-
-    # Adjust the path to your users JSON file as needed
     with open("Backend/db/user_data.json", "r") as f:
         data = json.load(f)
         users = data.get("customer_users", [])
     for user in users:
         if user["username"] == username and user["password"] == password:
             print(f"Login successful. Welcome, {username}!")
-            return Customer(**user)  # or return a Customer object if you want
-
+            if user["role"] == "customer":
+                return Customer(**user)
+            elif user["role"] == "staff":
+                return Staff(**user)
+            else:
+                print(f"Unknown role: '{user['role']}' for user {username}")
+                return None
     print("Login failed. Invalid username or password.")
     return None
+
 
 
 if __name__ == "__main__":
