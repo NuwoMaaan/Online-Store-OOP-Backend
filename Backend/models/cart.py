@@ -33,11 +33,21 @@ class Cart:
         }
         
 
-    def checkout(self, shipping_details):
+    def checkout(self):
+        if not self.items:
+            print("Cart it empty. Add Items first before checkout.")
+            return None
+        self.view_cart()
+        print(f"Subtotal: {self.get_total()}")
+        shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
         self.items: List[Item] = []  # Clear cart after checkout
         return order
     
-
-
-    
+    def view_cart(self):
+        if not self.items:
+            print("Your cart is empty.")
+            return
+        print("\nItems in your cart:")
+        for item in self.items:
+            print(f"{item.item_id}: {item.name} - ${item.price:.2f}")

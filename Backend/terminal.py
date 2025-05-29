@@ -40,99 +40,62 @@ def menu(user):
     print("2 - View Cart")
     print("3 - Checkout")
     print("4 - Exit")
-
-
     choice = input("Enter your choice: ").strip()
+
+
     if choice == "1":
-        view_catalogue(user)
+        catalogue = Catalogue.get_instance()
+        while True:
+            catalogue.view_catalogue()
+            item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
+            if item_id.lower() == 'q':
+                break
+            try:
+                item_id = int(item_id)
+                item = catalogue.get_item_by_id(item_id)
+                if item:
+                    user.cart.add_item(item)
+                    print(f"Added {item.name} to your cart.")
+                else:
+                    print(f"Item with ID {item_id} not found in the catalogue.")
+            except ValueError:
+                print("Invalid item ID. Please enter a valid number or 'q' to quit.")
+        menu(user)
+
     elif choice == "2":
-        view_cart(user)
+        
+        while True:
+            user.cart.view_cart()
+            menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
+            if menu_choice == 'r':
+                item_id = input("Enter item ID to remove: ").strip()
+                try:
+                    item_id = int(item_id)
+                    user.cart.remove_item(item_id)
+                    print(f"Removed item with ID {item_id} from your cart.")
+                except ValueError:
+                    print("Invalid item ID. Please enter a valid number.")
+            elif menu_choice == 'c':
+                order = user.cart.checkout()
+                order.order_summary()
+                user.orders.append(order)
+                break
+            elif menu_choice == 'q':
+                break
+            else:
+                print("Invalid option. Try again.")
+        menu(user)
+
     elif choice == "3":
-        check_out(user)
+        order = user.cart.checkout()
+        order.order_summary()
+        user.orders.append(order)
+    
     elif choice == "4":
         print("Exiting Menu")
     else:
         print(f"Unknown option: {choice}") 
 
-def view_catalogue(user: Customer):
-    print(f"------Catalogue------")
-    catalogue = Catalogue.get_instance()
-    items = catalogue.get_all_items()
-    if not items:
-        print("No items available in the catalogue.")
-        return
-    print("\nCatalogue Items:")
-    for item in items:
-        print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
-    item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
-    if item_id.lower() == 'q':
-        return menu(user)
-    else:
-        try:
-            item_id = int(item_id)
-            item = catalogue.get_item_by_id(item_id)
-            if item:
-                user.cart.add_item(item)
-                print(f"Added {item.name} to your cart.")
-                menu(user)
-            else:
-                print(f"Item with ID {item_id} not found in the catalogue.")
-                menu(user)
-        except ValueError:
-            print("Invalid item ID. Please enter a valid number.")
-            menu(user)
-
-def view_cart(user: Customer):
-    cart = user.cart
-    if not cart.items:
-        print("Your cart is empty.")
-        return menu(user)
-    print("\nItems in your cart:")
-    for item in cart.items:
-        print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
-        
-    menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
-    if menu_choice == 'r':
-        item_id = input("Enter item ID to remove: ").strip()
-        try:
-            item_id = int(item_id)
-            cart.remove_item(item_id)
-            print(f"Removed item with ID {item_id} from your cart.")
-            menu(user)
-        except ValueError:
-            print("Invalid item ID. Please enter a valid number.")
-    elif menu_choice == 'c':
-        check_out(user)
-    else:
-        print("Returning to main menu.")
-        menu(user)
-
-
-################does not work yet#####################
-def check_out(user: Customer):
-    cart = user.cart
-    cart_items = cart.get_items()
-    if not cart_items:
-        print("Your cart is empty. Please add items to your cart before checking out.")
-        return menu(user)
-    print("\nCheckout:")
-    print("Items in your cart:")
-    for item in cart_items:
-        print(f"- {item.name}: ${item.price:.2f}")
-    total = cart.get_total()
-    print(f"Sub Total: ${total:.2f}")
-
-    shipping_details = cart.get_shipping_details()
-    order = cart.checkout(shipping_details)
-    user.orders.append(order)  
-
-    print("\nOrder Summary:")
-    print(f"Customer ID: {order.customer_id}")
-    for item in order.items:
-        print(f"- {item.name}: ${item.price:.2f}")
-    print(f"Total: ${order.total:.2f}") 
-
-#########################################################################
 
 def login():
     username = input("Enter username: ")

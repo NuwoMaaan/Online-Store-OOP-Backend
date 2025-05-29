@@ -15,3 +15,11 @@ class Order:
     def add_payment(self, payment):
         self.payment = payment
         self.status = "paid"
+
+    def order_summary(self):
+        print("\nOrder Summary:")
+        print(f"Customer ID: {self.customer_id}")
+        for item in self.items:
+            print(f"- {item.name}: ${item.price:.2f}")
+        print(f"Total: ${self.total:.2f}")  
+
