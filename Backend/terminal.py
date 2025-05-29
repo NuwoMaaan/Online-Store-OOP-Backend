@@ -13,7 +13,6 @@ import json
 
 
 
-
 def main():
     print("This is the terminal interface for the backend system.")
     print("You can run various commands to interact with the system.")
@@ -26,36 +25,37 @@ def main():
         if command == "2":
             print("Exiting terminal. Goodbye!")
             break
-        elif command == "1":
+        elif command == "1":   
             user = login()
             if user is None:
                 print("Login failed. Please try again.")
+            if user is not None:
                 menu(user)
         else:
             print(f"Unknown command: {command}")
 
 def menu(user):
-    print("\nWelcome to the main menu!")
+    print(f"------main menu------")
     print("1 - View Catalogue")
     print("2 - View Cart")
     print("3 - Checkout")
     print("4 - Exit")
 
-    while True:
-        choice = input("Enter your choice: ").strip()
-        if choice == "1":
-            view_catalogue()
-        elif choice == "2":
-            view_cart(user)
-        elif choice == "3":
-            checkout()
-        elif choice == "4":
-            print("Exiting. Goodbye!")
-            break
-        else:
-            print(f"Unknown option: {choice}") 
 
-def view_catalogue():
+    choice = input("Enter your choice: ").strip()
+    if choice == "1":
+        view_catalogue(user)
+    elif choice == "2":
+        view_cart(user)
+    elif choice == "3":
+        checkout(user)
+    elif choice == "4":
+        print("Exiting Menu")
+    else:
+        print(f"Unknown option: {choice}") 
+
+def view_catalogue(user: Customer):
+    print(f"------Catalogue------")
     catalogue = Catalogue.get_instance()
     items = catalogue.get_all_items()
     if not items:
@@ -64,35 +64,63 @@ def view_catalogue():
     print("\nCatalogue Items:")
     for item in items:
         print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
+    item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
+    if item_id.lower() == 'q':
+        return menu(user)
+    else:
+        try:
+            item_id = int(item_id)
+            item = catalogue.get_item_by_id(item_id)
+            if item:
+                user.cart.add_item(item)
+                print(f"Added {item.name} to your cart.")
+                menu(user)
+            else:
+                print(f"Item with ID {item_id} not found in the catalogue.")
+                menu(user)
+        except ValueError:
+            print("Invalid item ID. Please enter a valid number.")
+            menu(user)
 
 def view_cart(user: Customer):
     cart = user.cart
     if not cart.items:
         print("Your cart is empty.")
-        return
+        return menu(user)
     print("\nItems in your cart:")
     for item in cart.items:
         print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
+        menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
+    if menu_choice == 'r':
+        item_id = input("Enter item ID to remove: ").strip()
+        try:
+            item_id = int(item_id)
+            cart.remove_item(item_id)
+            print(f"Removed item with ID {item_id} from your cart.")
+            menu(user)
+        except ValueError:
+            print("Invalid item ID. Please enter a valid number.")
+    elif menu_choice == 'c':
+        checkout(user)
 
-def checkout():
+
+################does not work yet#####################
+def checkout(user: Customer):
     address = input("Enter shipping address: ")
     city = input("Enter city: ")
     postal_code = input("Enter postal code: ")
 
-    # Assuming you have a way to get the current user's ID
-    customer_id = 1  # Replace with actual customer ID logic
-
-    cart = Cart(customer_id)
+    cart = Cart(user.user_id)
     shipping_details = cart.get_shipping_details(address, city, postal_code)
 
-    order = cart.checkout(customer_id, shipping_details)
+    order = cart.checkout(user.user_id, shipping_details)
     
     print("\nOrder Summary:")
     print(f"Customer ID: {order.customer_id}")
     for item in order.items:
         print(f"- {item.name}: ${item.price:.2f}")
     print(f"Total: ${order.total:.2f}")
-    
+#########################################################################
 
 def login():
     username = input("Enter username: ")

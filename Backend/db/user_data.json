@@ -12,7 +12,7 @@
     "customer_users": [
         {
             "user_id": 2,
-            "username": "JohnDoe",
+            "username": "joe",
             "email": "john@outlook.com",
             "role": "customer",
             "password": "password"

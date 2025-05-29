@@ -16,12 +16,12 @@
             "price": 999.99
         },
         {
-            "item_id": 3,
-            "name": "Samsung Galaxy S24",
+            "item_id": 4,
+            "name": "Iphone 15 Pro",
             "price": 999.99
         },
         {
-            "item_id": 101,
+            "item_id": 5,
             "name": "Wireless Mouse",
             "price": 49.99
         }
