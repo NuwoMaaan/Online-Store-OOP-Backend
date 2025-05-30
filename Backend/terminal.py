@@ -9,7 +9,7 @@ from models.PAYMENT import PaypalPayment
 from models.PAYMENT import PaymentMethod
 from models.PAYMENT import CardPaymentMethod
 from models.PAYMENT import PaypalPaymentMethod
-from services import terminal_payment_service as payment
+from services import terminal_payment_service as payment_service
 import json
 
 
@@ -80,8 +80,8 @@ def menu(user):
                 order = user.cart.checkout()
                 order.order_summary()
                 user.orders.append(order)
-                payment_factory, kwargs = payment.create_payment_factory(order)
-                payment.process_payment(payment_factory, kwargs)
+                payment_factory, kwargs = payment_service.create_payment_factory(order)
+                payment_service.process_payment(payment_factory, kwargs)
                 break
             elif menu_choice == 'q':
                 break
@@ -93,8 +93,14 @@ def menu(user):
         order = user.cart.checkout()
         order.order_summary()
         user.orders.append(order)
-        payment_factory, kwargs = payment.create_payment_factory(order)
-        payment.process_payment(payment_factory, kwargs)
+        payment_factory, kwargs = payment_service.create_payment_factory(order)
+        payment = payment_service.process_payment(payment_factory, kwargs)
+        order.add_payment(payment)
+        sales_doc = payment.create_salesdocument()
+        sales_doc.generate_sales_document(order)
+        
+
+
     elif choice == "4":
         print("Exiting Menu")
     else:

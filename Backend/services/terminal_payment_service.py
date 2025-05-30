@@ -25,8 +25,9 @@ def create_payment_factory(order):
 def process_payment(factory, kwargs):
     try:
         payment = factory.create_payment(**kwargs)
-        payment.validate()
-        payment.pay()
+        payment.process()
+        # payment.validate()
+        # payment.pay()
         return payment
     except ValueError as e:
         print(f"Payment failed: {e}")

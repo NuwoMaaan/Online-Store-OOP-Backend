@@ -1,5 +1,6 @@
 from models.item import Item
 from typing import List
+import random
 
 class Order:
     def __init__(self, customer_id, items, shipping_details):
@@ -11,6 +12,7 @@ class Order:
         self.total = self.subtotal + self.shipping_cost
         self.status = "pending"  # or "paid"
         self.payment = None      # IPayment object
+        self.order_no = random.randint(2000,4000)
 
     def add_payment(self, payment):
         self.payment = payment
@@ -18,6 +20,7 @@ class Order:
 
     def order_summary(self):
         print("\n-----Order Summary-----:")
+        print(f"Order Number: {self.order_no}")
         print(f"Customer ID: {self.customer_id}")
         print("Shipping details:")
         for key,value in self.shipping_details.items():
