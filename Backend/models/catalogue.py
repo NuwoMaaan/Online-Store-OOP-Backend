@@ -38,24 +38,23 @@ class Catalogue:
         print("Catalogue Items:")
         for item in items:
             print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
-        
-
-        # item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
-        # if item_id.lower() == 'q':
-        #     return menu(user)
-        # else:
-        #     try:
-        #         item_id = int(item_id)
-        #         item = self.get_item_by_id(item_id)
-        #         if item:
-        #             user.cart.add_item(item)
-        #             print(f"Added {item.name} to your cart.")
-        #             menu(user)
-        #         else:
-        #             print(f"Item with ID {item_id} not found in the catalogue.")
-        #             menu(user)
-        #     except ValueError:
-        #         print("Invalid item ID. Please enter a valid number.")
-        #         menu(user)
-        
     
+    @staticmethod
+    def catalogue_menu(user):
+        catalogue = Catalogue.get_instance()
+        while True:
+            catalogue.view_catalogue()
+            item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
+            if item_id.lower() == 'q':
+                break
+            try:
+                item_id = int(item_id)
+                item = catalogue.get_item_by_id(item_id)
+                if item:
+                    user.cart.add_item(item)
+                    print(f"Added {item.name} to your cart.")
+                else:
+                    print(f"Item with ID {item_id} not found in the catalogue.")
+            except ValueError:
+                print("Invalid item ID. Please enter a valid number or 'q' to quit.")
+        

@@ -1,6 +1,7 @@
 from typing import List
 from models.item import Item
 from models.order import Order
+from services import terminal_payment_service as payment_service
 
 class Cart:
     def __init__(self, customer_id: int):
@@ -51,3 +52,25 @@ class Cart:
         print("\nItems in your cart:")
         for item in self.items:
             print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
+
+
+    @staticmethod
+    def cart_menu(user):
+        while True:
+            user.cart.view_cart()
+            menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
+            if menu_choice == 'r':
+                item_id = input("Enter item ID to remove: ").strip()
+                try:
+                    item_id = int(item_id)
+                    user.cart.remove_item(item_id)
+                    print(f"Removed item with ID {item_id} from your cart.")
+                except ValueError:
+                    print("Invalid item ID. Please enter a valid number.")
+            elif menu_choice == 'c':
+                payment_service.transaction_procedure(user)
+                break
+            elif menu_choice == 'q':
+                break
+            else:
+                print("Invalid option. Try again.")

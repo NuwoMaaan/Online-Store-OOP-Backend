@@ -10,6 +10,7 @@ from models.PAYMENT import PaymentMethod
 from models.PAYMENT import CardPaymentMethod
 from models.PAYMENT import PaypalPaymentMethod
 from services import terminal_payment_service as payment_service
+
 import json
 
 
@@ -45,44 +46,10 @@ def menu(user):
 
 
     if choice == "1":
-        catalogue = Catalogue.get_instance()
-        while True:
-            catalogue.view_catalogue()
-            item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
-            if item_id.lower() == 'q':
-                break
-            try:
-                item_id = int(item_id)
-                item = catalogue.get_item_by_id(item_id)
-                if item:
-                    user.cart.add_item(item)
-                    print(f"Added {item.name} to your cart.")
-                else:
-                    print(f"Item with ID {item_id} not found in the catalogue.")
-            except ValueError:
-                print("Invalid item ID. Please enter a valid number or 'q' to quit.")
+        Catalogue.catalogue_menu(user)
         menu(user)
-
     elif choice == "2":
-        
-        while True:
-            user.cart.view_cart()
-            menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
-            if menu_choice == 'r':
-                item_id = input("Enter item ID to remove: ").strip()
-                try:
-                    item_id = int(item_id)
-                    user.cart.remove_item(item_id)
-                    print(f"Removed item with ID {item_id} from your cart.")
-                except ValueError:
-                    print("Invalid item ID. Please enter a valid number.")
-            elif menu_choice == 'c':
-                payment_service.transaction_procedure(user)
-                break
-            elif menu_choice == 'q':
-                break
-            else:
-                print("Invalid option. Try again.")
+        Cart.cart_menu(user)
         menu(user)
     elif choice == "3":
         payment_service.transaction_procedure(user)
