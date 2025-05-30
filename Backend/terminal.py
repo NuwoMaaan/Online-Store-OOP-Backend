@@ -77,30 +77,15 @@ def menu(user):
                 except ValueError:
                     print("Invalid item ID. Please enter a valid number.")
             elif menu_choice == 'c':
-                order = user.cart.checkout()
-                order.order_summary()
-                user.orders.append(order)
-                payment_factory, kwargs = payment_service.create_payment_factory(order)
-                payment_service.process_payment(payment_factory, kwargs)
+                payment_service.transaction_procedure(user)
                 break
             elif menu_choice == 'q':
                 break
             else:
                 print("Invalid option. Try again.")
         menu(user)
-
     elif choice == "3":
-        order = user.cart.checkout()
-        order.order_summary()
-        user.orders.append(order)
-        payment_factory, kwargs = payment_service.create_payment_factory(order)
-        payment = payment_service.process_payment(payment_factory, kwargs)
-        order.add_payment(payment)
-        sales_doc = payment.create_salesdocument()
-        sales_doc.generate_sales_document(order)
-        
-
-
+        payment_service.transaction_procedure(user)
     elif choice == "4":
         print("Exiting Menu")
     else:

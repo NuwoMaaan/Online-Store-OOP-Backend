@@ -6,14 +6,14 @@ from models.order import Order
 class SalesDocument():
     def __init__(self):
         self.invoice_number = random.randint(6000,7000)
-        self.date_time = datetime.datetime.now()
+        self.date_time = datetime.datetime.now().replace(microsecond=0)
     
    
         
 
     def generate_sales_document(self, order):
         print("\n-----Inoivce Receipt------")
-        print(f"Inoice Number: {self.invoice_number}, Customer ID: {order.customer_id}")
+        print(f"Inoice Number: #{self.invoice_number}, Customer ID: {order.customer_id}")
         print(f"Date of processed: {self.date_time}, STATUS: {order.status}")
         print(f"Payment method: {type(order.payment).__name__} ")
 
@@ -22,7 +22,7 @@ class SalesDocument():
             display_key = key.replace('_', ' ')
             if display_key == 'card number':
                 value = str(value)[-4:]
-                print(f"Card ending in: {value}")
+                print(f"Card ending in: ************{value}")
                 continue
             print(f"{display_key}: {value}")
         for item in order.items:

@@ -20,7 +20,7 @@ class Order:
 
     def order_summary(self):
         print("\n-----Order Summary-----:")
-        print(f"Order Number: {self.order_no}")
+        print(f"Order Number: #{self.order_no}")
         print(f"Customer ID: {self.customer_id}")
         print("Shipping details:")
         for key,value in self.shipping_details.items():
