@@ -20,6 +20,13 @@
             "email": "staff@google.com",
             "role": "staff",
             "password": "password"
+        },
+        {
+            "user_id": 4,
+            "username": "test123",
+            "email": "test123@outlook.com",
+            "role": "customer",
+            "password": "password"
         }
     ]
 }
