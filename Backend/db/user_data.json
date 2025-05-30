@@ -1,23 +1,25 @@
 {
-    "staff_users": [
+    "users": [
         {
             "user_id": 1,
-            "username": "Ayush",
-            "email": "ayush@example.com",
-            "role": "staff",
-            "password": "password"
-        }
-    ]
-    ,
-    "customer_users": [
-        {
-            "user_id": 2,
             "username": "joe",
             "email": "john@outlook.com",
             "role": "customer",
             "password": "password"
+        },
+        {
+            "user_id": 2,
+            "username": "test",
+            "email": "test@google.com",
+            "role": "customer",
+            "password": "password"
+        },
+        {
+            "user_id": 3,
+            "username": "staff",
+            "email": "staff@google.com",
+            "role": "staff",
+            "password": "password"
         }
-        
     ]
 }
-
