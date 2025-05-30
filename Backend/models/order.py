@@ -5,7 +5,7 @@ import random
 class Order:
     def __init__(self, customer_id, items, shipping_details):
         self.customer_id = customer_id
-        self.items: List[Item] = []#List of Item objects
+        self.items: List[Item] = items #List of Item objects
         self.shipping_details = shipping_details
         self.subtotal = sum(item.price for item in items)
         self.shipping_cost = 10.0
@@ -25,7 +25,6 @@ class Order:
         print("Shipping details:")
         for key,value in self.shipping_details.items():
             print(f"{key}: {value}")
-        #print(self.shipping_details)
         for item in self.items:
             print(f"- {item.name}: ${item.price:.2f}")
         print(f"Total: ${self.total:.2f}")  

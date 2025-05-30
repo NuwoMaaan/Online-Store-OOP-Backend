@@ -18,8 +18,13 @@ class SalesDocument():
         print(f"Payment method: {type(order.payment).__name__} ")
 
         payment_attributes = vars(order.payment).items()
-        for key,value in payment_attributes:
-            print(f"{key}: {value}")
+        for key, value in payment_attributes:
+            display_key = key.replace('_', ' ')
+            if display_key == 'card number':
+                value = str(value)[-4:]
+                print(f"Card ending in: {value}")
+                continue
+            print(f"{display_key}: {value}")
         for item in order.items:
             print(f"{item.name} - ${item.price:.2f}")
         print(f"Shipping address:"," ".join(str(value) for value in order.shipping_details.values()))
@@ -27,5 +32,5 @@ class SalesDocument():
         print(f"Total: ${order.total}")
 
 
-    
+        
 

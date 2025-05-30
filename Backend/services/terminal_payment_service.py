@@ -7,7 +7,7 @@ def create_payment_factory(order):
         "paypal": PaypalPaymentMethod(),
     }
     while True:
-        method = input("Enter payment method (card/paypal): ").strip().lower()
+        method = input("\nEnter payment method (card/paypal): ").strip().lower()
         if method in factories:
             factory = factories[method]
             break
