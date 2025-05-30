@@ -27,5 +27,4 @@ class CardPayment(IPayment):
     def pay(self) -> None:
         print(f"Charging ${self.amount:.2f} to card ending in {self.card_number[-4:]}.\n")
     
-    # def create_salesdocument(self):
-    #     pass
+    

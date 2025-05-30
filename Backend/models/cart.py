@@ -2,17 +2,21 @@ from typing import List
 from models.item import Item
 from models.order import Order
 from services import terminal_payment_service as payment_service
+from models.format_items_table import print_items_table
 
 class Cart:
     def __init__(self, customer_id: int):
         self.customer_id = customer_id
         self.items: List[Item] = []
+        self.quantity = len(self.items)
 
     def add_item(self, item: Item):
         self.items.append(item)
+        self.quantity = len(self.items)
 
     def remove_item(self, item_id: int):
         self.items = [item for item in self.items if item.item_id != item_id]
+        self.quantity = len(self.items)
 
     def get_total(self):
         return sum(item.price for item in self.items)
@@ -39,7 +43,7 @@ class Cart:
             print("Cart it empty. Add Items first before checkout.")
             return None
         self.view_cart()
-        print(f"Subtotal: {self.get_total()}")
+        print(f"Subtotal: {self.get_total():2f}")
         shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
         self.items: List[Item] = []  # Clear cart after checkout
@@ -49,10 +53,8 @@ class Cart:
         if not self.items:
             print("Your cart is empty.")
             return
-        print("\nItems in your cart:")
-        for item in self.items:
-            print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
-
+        print(f"\nItems in your cart {self.quantity}:")
+        print_items_table(self.items)
 
     @staticmethod
     def cart_menu(user):

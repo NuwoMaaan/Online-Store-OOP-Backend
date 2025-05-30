@@ -1,6 +1,7 @@
 import datetime
 import random
 from models.order import Order
+from models.format_items_table import print_items_table
 
 
 class SalesDocument():
@@ -12,7 +13,7 @@ class SalesDocument():
         
 
     def generate_sales_document(self, order):
-        print("\n-----Inoivce Receipt------")
+        print("\n------Inoivce Receipt-------")
         print(f"Inoice Number: #{self.invoice_number}, Customer ID: {order.customer_id}")
         print(f"Date of processed: {self.date_time}, STATUS: {order.status}")
         print(f"Payment method: {type(order.payment).__name__} ")
@@ -25,8 +26,7 @@ class SalesDocument():
                 print(f"Card ending in: ************{value}")
                 continue
             print(f"{display_key}: {value}")
-        for item in order.items:
-            print(f"{item.name} - ${item.price:.2f}")
+        print_items_table(order.items)
         print(f"Shipping address:"," ".join(str(value) for value in order.shipping_details.values()))
 
         print(f"Total: ${order.total}")

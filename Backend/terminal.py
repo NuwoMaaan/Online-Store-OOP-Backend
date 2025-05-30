@@ -1,21 +1,23 @@
 from models.user import Customer, Staff
 from models.catalogue import Catalogue
 from models.cart import Cart
-from models.item import Item
-from models.order import Order
-from models.PAYMENT import Payment
-from models.PAYMENT import CardPayment
-from models.PAYMENT import PaypalPayment
-from models.PAYMENT import PaymentMethod
-from models.PAYMENT import CardPaymentMethod
-from models.PAYMENT import PaypalPaymentMethod
 from services import terminal_payment_service as payment_service
 
 import json
 
-
+def banner():
+    print(r"""
+      __          ________    ____        _ _               _____ _                 
+     /\ \        / /  ____|  / __ \      | (_)             / ____| |                
+    /  \ \  /\  / /| |__    | |  | |_ __ | |_ _ __   ___  | (___ | |_ ___  _ __ ___ 
+   / /\ \ \/  \/ / |  __|   | |  | | '_ \| | | '_ \ / _ \  \___ \| __/ _ \| '__/ _ \
+  / ____ \  /\  /  | |____  | |__| | | | | | | | | |  __/  ____) | || (_) | | |  __/
+ /_/    \_\/  \/   |______|  \____/|_| |_|_|_|_| |_|\___| |_____/ \__\___/|_|  \___
+""")
+   
 
 def main():
+    banner()
     print("This is the terminal interface for the backend system.")
     print("You can run various commands to interact with the system.")
     
@@ -37,7 +39,7 @@ def main():
             print(f"Unknown command: {command}")
 
 def menu(user):
-    print(f"------main menu------")
+    print(f"\n======main menu======")
     print("1 - View Catalogue")
     print("2 - View Cart")
     print("3 - Checkout")
