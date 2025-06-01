@@ -33,6 +33,7 @@ def main():
             break
         elif command == "1":   
             user = User.login()
+            user.cart.load_cart(user.user_id)
             if user is None:
                 print("Login failed. Please try again.")
             if user is not None:

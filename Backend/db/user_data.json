@@ -23,8 +23,8 @@
         },
         {
             "user_id": 4,
-            "username": "test123",
-            "email": "test123@outlook.com",
+            "username": "leo",
+            "email": "leo@outlook.com",
             "role": "customer",
             "password": "password"
         }

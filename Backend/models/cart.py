@@ -3,6 +3,11 @@ from models.item import Item
 from models.order import Order
 from services import terminal_payment_service as payment_service
 from models.format_items_table import print_items_table
+from models.catalogue import Catalogue
+import json
+import os
+
+cart_db_file = "Backend\db\cart_data.json"
 
 class Cart:
     def __init__(self, customer_id: int):
@@ -13,10 +18,12 @@ class Cart:
     def add_item(self, item: Item):
         self.items.append(item)
         self.quantity = len(self.items)
+        self.save_cart(self.customer_id)
 
     def remove_item(self, item_id: int):
         self.items = [item for item in self.items if item.item_id != item_id]
         self.quantity = len(self.items)
+        self.save_cart(self.customer_id)
 
     def get_total(self):
         return sum(item.price for item in self.items)
@@ -26,6 +33,43 @@ class Cart:
     
     def to_dict(self):
         return [item.to_dict() for item in self.items]
+    
+
+    def save_cart(self, customer_id):
+        if os.path.exists(cart_db_file):
+            with open(cart_db_file, "r") as f:
+                data = json.load(f)
+        else:
+            data = {"carts": []}
+        carts = data.get("carts", [])
+        carts = [cart for cart in carts if cart["customer_id"] != customer_id]
+        carts.append({
+            "customer_id": customer_id,
+            "items": [{"item_id": str(item.item_id)} for item in self.items]
+        })
+        data["carts"] = carts
+
+        with open(cart_db_file, "w") as f:
+            json.dump(data, f, indent=4)
+
+
+
+
+    def load_cart(self, customer_id):
+        with open(cart_db_file, "r") as f:
+            data = json.load(f)
+            carts = data.get("carts", [])
+            user_cart = next((cart for cart in carts if cart["customer_id"] == customer_id), None)
+            if user_cart:
+                catalogue = Catalogue.get_instance()
+                self.items = []
+                for item in user_cart["items"]:
+                    item_obj = catalogue.get_item_by_id(int(item["item_id"]))
+                    if item_obj:
+                        self.items.append(item_obj)
+            else:
+                self.items = []
+            
     
     def get_shipping_details(self):
         address = input("Enter shipping address: ")
@@ -54,21 +98,29 @@ class Cart:
             print("Your cart is empty.")
             return
         print(f"\nItems in your cart {self.quantity}:")
-        print_items_table(self.items)
-
+        #print_items_table(self.items)
+        print(f"{'No.':<4} {'Name':<20} {'Price':>8}")
+        for idx, item in enumerate(self.items, 1):
+            print(f"{idx:<4} {item.name:<20} ${item.price:>7.2f}")
+    
     @staticmethod
     def cart_menu(user):
         while True:
             user.cart.view_cart()
-            menu_choice = input("Enter 'r' to remove an item or 'c' to checkout (or 'q' to quit): ").strip().lower()
+            menu_choice = input("Enter 'r' to remove an item, 'c' to checkout, or 'q' to quit: ").strip().lower()
             if menu_choice == 'r':
-                item_id = input("Enter item ID to remove: ").strip()
+                item_num = input("Enter item number to remove: ").strip()
                 try:
-                    item_id = int(item_id)
-                    user.cart.remove_item(item_id)
-                    print(f"Removed item with ID {item_id} from your cart.")
+                    item_num = int(item_num)
+                    if 1 <= item_num <= len(user.cart.items):
+                        item_to_remove = user.cart.items[item_num - 1]
+                        user.cart.remove_item(item_to_remove.item_id)
+                        user.cart.quantity = len(user.cart.items)
+                        print(f"Removed {item_to_remove.name} from your cart.")
+                    else:
+                        print("Invalid item number.")
                 except ValueError:
-                    print("Invalid item ID. Please enter a valid number.")
+                    print("Invalid input. Please enter a valid number.")
             elif menu_choice == 'c':
                 payment_service.transaction_procedure(user)
                 break
@@ -76,3 +128,5 @@ class Cart:
                 break
             else:
                 print("Invalid option. Try again.")
+
+   

@@ -1,19 +1,23 @@
 {
-  "carts": [
-    {
-      "user_id": 2,
-      "items": [
+    "carts": [
         {
-          "item_id": "888",
-          "price": 9.99,
-          "quantity": 2
+            "customer_id": 1,
+            "items": [
+                {
+                    "item_id": "3"
+                },
+                {
+                    "item_id": "4"
+                }
+            ]
         },
         {
-          "item_id": "456",
-          "price": 15.5,
-          "quantity": 1
+            "customer_id": 4,
+            "items": [
+                {
+                    "item_id": "2"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
