@@ -22,11 +22,11 @@ class Catalogue:
             data = json.load(f)
         return [Item(**item) for item in data.get("items", [])]
 
-    def get_all_items(self):
-        return self.items
-
     def get_item_by_id(self, item_id):
         return next((item for item in self.items if item.item_id == item_id), None)
+    
+    def get_all_items(self):
+        return self.items
     
     def view_catalogue(self):
         print(f"======Catalogue======")

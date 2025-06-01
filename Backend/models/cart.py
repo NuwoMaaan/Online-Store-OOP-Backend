@@ -28,10 +28,7 @@ class Cart:
 
     def get_total(self):
         return sum(item.price for item in self.items)
-
-    def get_items(self):
-        return self.items
-
+    
     
     def clear_cart_payment(self):
         with open(cart_db_file, 'r') as f:
