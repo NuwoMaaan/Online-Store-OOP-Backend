@@ -9,9 +9,6 @@ class SalesDocument():
         self.invoice_number = random.randint(6000,7000)
         self.date_time = datetime.datetime.now().replace(microsecond=0)
     
-   
-        
-
     def generate_sales_document(self, order):
         print("\n------Inoivce Receipt-------")
         print(f"Inoice Number: #{self.invoice_number}, Customer ID: {order.customer_id}")

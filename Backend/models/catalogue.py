@@ -8,7 +8,6 @@ class Catalogue:
     def __init__(self, data_file="Backend\db\mock_data.json"):
         if Catalogue.__instance is not None:
             raise Exception("Singleton class cannot be instantiated more than once.")
-
         self.items = self.load_items(data_file)
         Catalogue.__instance = self
 

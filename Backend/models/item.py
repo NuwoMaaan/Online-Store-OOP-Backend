@@ -1,13 +1,12 @@
-from pydantic import BaseModel
+# from pydantic import BaseModel
 
-class Item(BaseModel):
-    item_id: int
-    name: str
-    price: float
+# class Item(BaseModel):
+#     item_id: int
+#     name: str
+#     price: float
 
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(**data)
-
-    def to_dict(self):
-        return self.model_dump()
+class Item():
+    def __init__(self, item_id, name, price):
+        self.item_id = item_id
+        self.name = name
+        self.price = price

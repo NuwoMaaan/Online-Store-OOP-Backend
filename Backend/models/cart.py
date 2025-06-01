@@ -18,48 +18,54 @@ class Cart:
     def add_item(self, item: Item):
         self.items.append(item)
         self.quantity = len(self.items)
-        self.save_cart(self.customer_id)
+        self.save_cart()
 
-    def remove_item(self, item_id: int):
-        self.items = [item for item in self.items if item.item_id != item_id]
+    def remove_item(self, item_num_in_cart: int):
+        #self.items = [item for item in self.items if item.item_id != item_id]
+        self.items.pop(item_num_in_cart)
         self.quantity = len(self.items)
-        self.save_cart(self.customer_id)
+        self.save_cart()
 
     def get_total(self):
         return sum(item.price for item in self.items)
 
     def get_items(self):
         return self.items
-    
-    def to_dict(self):
-        return [item.to_dict() for item in self.items]
-    
 
-    def save_cart(self, customer_id):
+    
+    def clear_cart_payment(self):
+        with open(cart_db_file, 'r') as f:
+            data = json.load(f)
+        carts = data.get("carts", [])
+        carts = [cart for cart in carts if cart["customer_id"] != self.customer_id]
+        carts.clear()
+        data["carts"] = carts
+        with open(cart_db_file, "w") as f:
+            json.dump(data, f, indent=4)
+
+
+    def save_cart(self):
         if os.path.exists(cart_db_file):
             with open(cart_db_file, "r") as f:
                 data = json.load(f)
         else:
             data = {"carts": []}
         carts = data.get("carts", [])
-        carts = [cart for cart in carts if cart["customer_id"] != customer_id]
+        carts = [cart for cart in carts if cart["customer_id"] != self.customer_id]
         carts.append({
-            "customer_id": customer_id,
+            "customer_id": self.customer_id,
             "items": [{"item_id": str(item.item_id)} for item in self.items]
         })
         data["carts"] = carts
-
         with open(cart_db_file, "w") as f:
             json.dump(data, f, indent=4)
 
 
-
-
-    def load_cart(self, customer_id):
+    def load_cart(self):
         with open(cart_db_file, "r") as f:
             data = json.load(f)
             carts = data.get("carts", [])
-            user_cart = next((cart for cart in carts if cart["customer_id"] == customer_id), None)
+            user_cart = next((cart for cart in carts if cart["customer_id"] == self.customer_id), None)
             if user_cart:
                 catalogue = Catalogue.get_instance()
                 self.items = []
@@ -87,7 +93,7 @@ class Cart:
             print("Cart it empty. Add Items first before checkout.")
             return None
         self.view_cart()
-        print(f"Subtotal: {self.get_total():2f}")
+        print(f"Subtotal: {self.get_total():.2f}")
         shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
         self.items: List[Item] = []  # Clear cart after checkout
@@ -102,7 +108,7 @@ class Cart:
         print(f"{'No.':<4} {'Name':<20} {'Price':>8}")
         for idx, item in enumerate(self.items, 1):
             print(f"{idx:<4} {item.name:<20} ${item.price:>7.2f}")
-    
+
     @staticmethod
     def cart_menu(user):
         while True:
@@ -114,7 +120,7 @@ class Cart:
                     item_num = int(item_num)
                     if 1 <= item_num <= len(user.cart.items):
                         item_to_remove = user.cart.items[item_num - 1]
-                        user.cart.remove_item(item_to_remove.item_id)
+                        user.cart.remove_item(item_num - 1)
                         user.cart.quantity = len(user.cart.items)
                         print(f"Removed {item_to_remove.name} from your cart.")
                     else:
@@ -128,5 +134,6 @@ class Cart:
                 break
             else:
                 print("Invalid option. Try again.")
-
+    
+  
    
