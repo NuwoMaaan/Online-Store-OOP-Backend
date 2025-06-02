@@ -93,7 +93,7 @@ class Cart:
         print(f"Subtotal: {self.get_total():.2f}")
         shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
-        self.items: List[Item] = []  # Clear cart after checkout
+        #self.items: List[Item] = []  # Clear cart after checkout - POTENTIAL ISSUE: customer checkout failure, removes cart before with order process.
         return order
     
     def view_cart(self):

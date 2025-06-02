@@ -66,13 +66,13 @@ def menu(user):
 
 def staff_menu(user):
     print(f"\n======Staff menu======")
-    print("1 - Manageme Catalogue")
+    print("1 - Manage Catalogue")
     print("2 - Generate report")
     print("3 - Exit")
     choice = input("Enter your choice: ").strip()
 
     if choice == "1":
-        Catalogue.catalogue_staff(user)
+        Catalogue.catalogue_staff()
         #staff_menu(user)
     elif choice == "2":
         pass

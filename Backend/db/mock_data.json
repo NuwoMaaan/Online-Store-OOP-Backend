@@ -1,4 +1,5 @@
 {
+    "total_history_id_count": 7,
     "items": [
         {
             "item_id": 1,
@@ -31,10 +32,10 @@
             "quantity": 100
         },
         {
-            "item_id": 6,
-            "name": "TI-30XB Calculator",
+            "item_id": 7,
+            "name": "TI-30XB",
             "price": 30.0,
-            "quantity": "40"
+            "quantity": "20"
         }
     ]
 }
