@@ -44,3 +44,4 @@ def transaction_procedure(user):
     sales_doc = payment.create_salesdocument()
     sales_doc.generate_sales_document(order)
     user.cart.clear_cart_payment()
+    

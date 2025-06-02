@@ -1,23 +1,65 @@
 {
-  "ordersDB": [
+    "ordersDB": [
         {
-      "user_id": 1,
-      "orders": [
+            "customer_id": 1,
+            "orders": [
+                {
+                    "order_no": 101,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 5
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "123 Main St",
+                        "city": "Melbourne",
+                        "postal_code": "3000"
+                    },
+                    "total": 1549.98,
+                    "date": "2025-06-03 04:20:18"
+                }
+            ]
+        },
         {
-          "order_id": 101,
-          "items": [
-            {"item_id": 2},
-            {"item_id": 5}
-          ],
-          "shipping_details": {
-            "address": "123 Main St",
-            "city": "Melbourne",
-            "postal_code": "3000"
-          },
-          "total": 1549.98,
-          "date": "2024-06-02T12:34:56"
+            "customer_id": 4,
+            "orders": [
+                {
+                    "order_no": 4784,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 3
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 fake st",
+                        "city": "new york",
+                        "postal_code": "3333"
+                    },
+                    "total": 2509.98,
+                    "date": "2025-06-03 05:02:18"
+                },
+                {
+                    "order_no": 2494,
+                    "items": [
+                        {
+                            "item_id": 5
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "fake st ",
+                        "city": "melb",
+                        "postal_code": "3333"
+                    },
+                    "total": 59.99,
+                    "date": "2025-06-03 05:33:36"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
