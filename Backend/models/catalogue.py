@@ -20,8 +20,13 @@ class Catalogue:
     def load_items(self, filepath):
         with open(filepath, "r") as f:
             data = json.load(f)
-        return [Item(**item) for item in data.get("items", [])]
-
+        items = []
+        for item in data.get("items", []):
+            # Dont include quantity to construct Item
+            item_data = {k: v for k, v in item.items() if k != "quantity"}
+            items.append(Item(**item_data))
+        return items
+    
     def get_item_by_id(self, item_id):
         return next((item for item in self.items if item.item_id == item_id), None)
     
