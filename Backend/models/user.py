@@ -10,7 +10,21 @@ class User(ABC):
         self.password = password
         self.role = role
         self.email = email
-    
+
+    @staticmethod
+    def check_instance(user):
+        if user is None:
+            print("Login failed. Please try again.")
+        else:
+            if isinstance(user, Customer):
+                user.cart.load_cart()
+                return True
+            elif isinstance(user, Staff):
+                print("Logged in as Staff.")
+                return False
+            else:
+                print("Unknown user type.")
+            
     @staticmethod
     def login():
         username = input("Enter username: ")
