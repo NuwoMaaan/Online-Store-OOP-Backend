@@ -1,47 +1,9 @@
-from models.PAYMENT.CardPaymentMethod import CardPaymentMethod
-from models.PAYMENT.PaypalPaymentMethod import PaypalPaymentMethod
 
-def create_payment_factory(order):
-    factories = {
-        "card": CardPaymentMethod(),
-        "paypal": PaypalPaymentMethod(),
-    }
-    while True:
-        method = input("\nEnter payment method (card/paypal): ").strip().lower()
-        if method in factories:
-            factory = factories[method]
-            break
-        print("Invalid method. Please choose 'card' or 'paypal'.")
+from services.payment_factory import PaymentFactory
 
-    kwargs = {}
-    for field in factory.get_fields():
-        if field == "amount":
-            kwargs[field] = order.total   
-        else:
-            kwargs[field] = input(f"Enter {field.replace('_', ' ')}: ")
-            
-    return factory, kwargs
+class PaymentService:
 
-def process_payment(factory, kwargs):
-    try:
-        payment = factory.create_payment(**kwargs)
-        payment.process()
-        # payment.validate()
-        # payment.pay()
-        return payment
-    except ValueError as e:
-        print(f"Payment failed: {e}")
-        return None
-    
-
-def transaction_procedure(user):
-    order = user.cart.checkout()
-    order.order_summary()
-    user.orders.append(order)
-    payment_factory, kwargs = create_payment_factory(order)
-    payment = process_payment(payment_factory, kwargs)
-    order.add_payment(payment)
-    sales_doc = payment.create_salesdocument()
-    sales_doc.generate_sales_document(order)
-    user.cart.clear_cart_payment()
-    
+    @staticmethod
+    def process(order):
+        factory, kwargs = PaymentFactory.create_payment_factory(order)
+        return PaymentFactory.process_payment(factory, kwargs)

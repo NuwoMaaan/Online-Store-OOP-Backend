@@ -1,8 +1,14 @@
 from models.user import User, Customer, Staff
 from models.catalogue import Catalogue
 from models.cart import Cart
-from services import payment_service as PaymentService
+from services.transaction_facade import TransactionFacade
+from services.cart_service import CartService
+from services.payment_service import PaymentService
+from services.sales_service import SalesService
+from services.order_service import OrderService
 
+
+transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
 
 def banner():
     print(r"""
@@ -59,7 +65,7 @@ def menu(user):
             Cart.cart_menu(user)
             menu(user)
         elif choice == "3":
-            PaymentService.transaction_procedure(user)
+            transaction.process(user)
         elif choice == "4":
             print("Exiting Menu")
             break

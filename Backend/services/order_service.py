@@ -4,7 +4,8 @@ import json
 db_file="Backend/db/order_data.json"
 
 class OrderService():
-    
+
+    @staticmethod
     def save_order_to_db(order, datetime):
         if os.path.exists(db_file):
             with open(db_file, "r") as f:
@@ -23,6 +24,12 @@ class OrderService():
             })
         with open(db_file, "w") as f:
             json.dump(data, f, indent=4)
+
+    @staticmethod
+    def checkout(user):
+        order = user.cart.checkout()
+        order.order_summary()
+        return order
 
 
     

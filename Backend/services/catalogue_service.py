@@ -7,6 +7,7 @@ data_file = "Backend\db\mock_data.json"
 
 class CatalogueService():
 
+    @staticmethod
     def remove_item(catalogue_instance):
         catalogue = catalogue_instance.get_instance()
         catalogue.view_catalogue()
@@ -32,7 +33,8 @@ class CatalogueService():
                     print(f"Item with ID {item_id} not found.")
             except ValueError:
                 print("Invalid item ID. Please enter a valid number or 'q' to quit.")
-
+                
+    @staticmethod
     def add_item(catalogue_instance):
         catalogue = catalogue_instance.get_instance()
         catalogue.view_catalogue()

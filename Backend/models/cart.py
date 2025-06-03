@@ -1,8 +1,14 @@
 from typing import List
 from models.item import Item
 from models.order import Order
-from services import payment_service as PaymentService
 from services.cart_service import CartService
+from services.transaction_facade import TransactionFacade 
+from services.order_service import OrderService 
+from services.payment_service import PaymentService
+from services.sales_service import SalesService
+from services.cart_service import CartService
+
+transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
 
 class Cart:
     def __init__(self, customer_id: int):
@@ -77,7 +83,7 @@ class Cart:
                 except ValueError:
                     print("Invalid input. Please enter a valid number.")
             elif menu_choice == 'c':
-                PaymentService.transaction_procedure(user)
+                transaction.process(user)
                 break
             elif menu_choice == 'q':
                 break

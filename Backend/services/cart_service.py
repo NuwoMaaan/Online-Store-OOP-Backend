@@ -6,6 +6,7 @@ cart_db_file = "Backend\db\cart_data.json"
 
 class CartService():
 
+    @staticmethod
     def clear_cart_payment(cart_instance):
         with open(cart_db_file, 'r') as f:
             data = json.load(f)
@@ -16,7 +17,7 @@ class CartService():
         with open(cart_db_file, "w") as f:
             json.dump(data, f, indent=4)
 
-
+    @staticmethod
     def save_cart(cart_instance):
         if os.path.exists(cart_db_file):
             with open(cart_db_file, "r") as f:
@@ -33,7 +34,7 @@ class CartService():
         with open(cart_db_file, "w") as f:
             json.dump(data, f, indent=4)
 
-
+    @staticmethod
     def load_cart(cart_instance):
         with open(cart_db_file, "r") as f:
             data = json.load(f)
@@ -48,3 +49,7 @@ class CartService():
                         cart_instance.items.append(item_obj)
             else:
                 cart_instance.items = []
+    
+    @staticmethod
+    def clear(cart):
+        cart.clear_cart_payment()
