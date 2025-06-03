@@ -82,8 +82,6 @@ class User(ABC):
             return None
 
 
-
-
 class Customer(User):
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str = "customer"):
         super().__init__(user_id, username, email, role, password)

@@ -4,6 +4,7 @@ import random
 from utlities.format_items_table import print_items_table
 import json
 import os
+from services.order_service import OrderService
 
 
 db_file="Backend/db/order_data.json"
@@ -34,25 +35,27 @@ class Order:
         print("Items:")
         print_items_table(self.items)
         print(f"Total: ${self.total:.2f}")
-         
 
     def save_order_to_db(self, datetime):
-        if os.path.exists(db_file):
-            with open(db_file, "r") as f:
-                data = json.load(f)
-        else:
-            data = {"ordersDB": []}
-        # Find user entry or create new
-        user_entry = next((u for u in data["ordersDB"] if u["customer_id"] == self.customer_id), None)
-        if user_entry:
-            user_entry["orders"].append(self.to_dict(datetime))
-        else:
-            data["ordersDB"].append({
-                "customer_id": self.customer_id,
-                "orders": [self.to_dict(datetime)]
-            })
-        with open(db_file, "w") as f:
-            json.dump(data, f, indent=4)
+            return OrderService.save_order_to_db(self, datetime)
+
+    # def save_order_to_db(self, datetime):
+    #     if os.path.exists(db_file):
+    #         with open(db_file, "r") as f:
+    #             data = json.load(f)
+    #     else:
+    #         data = {"ordersDB": []}
+    #     # Find user entry or create new
+    #     user_entry = next((u for u in data["ordersDB"] if u["customer_id"] == self.customer_id), None)
+    #     if user_entry:
+    #         user_entry["orders"].append(self.to_dict(datetime))
+    #     else:
+    #         data["ordersDB"].append({
+    #             "customer_id": self.customer_id,
+    #             "orders": [self.to_dict(datetime)]
+    #         })
+    #     with open(db_file, "w") as f:
+    #         json.dump(data, f, indent=4)
 
     def to_dict(self, datetime):
             return {
