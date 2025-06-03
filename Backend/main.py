@@ -6,6 +6,7 @@ from services.cart_service import CartService
 from services.payment_service import PaymentService
 from services.sales_service import SalesService
 from services.order_service import OrderService
+from services.user_service import UserService
 
 
 transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
@@ -36,7 +37,7 @@ def main():
             print("Exiting terminal. Goodbye!")
             break
         elif command == "1":  
-           user = User.login()
+           user = UserService.login()
            if isinstance(user, Customer):
                 menu(user)
            elif isinstance(user, Staff):
@@ -50,6 +51,7 @@ def main():
             print(f"Unknown command: {command}")
 
 def menu(user):
+    transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
     while True:
         print(f"\n======main menu======")
         print("1 - View Catalogue")
@@ -96,4 +98,5 @@ def staff_menu(user):
     
 
 if __name__ == "__main__":
+
     main()
