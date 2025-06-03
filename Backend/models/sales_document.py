@@ -1,7 +1,7 @@
 import datetime
 import random
 from models.order import Order
-from models.format_items_table import print_items_table
+from utlities.format_items_table import print_items_table
 
 
 class SalesDocument():

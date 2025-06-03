@@ -58,6 +58,36 @@
                     },
                     "total": 59.99,
                     "date": "2025-06-03 05:33:36"
+                },
+                {
+                    "order_no": 6303,
+                    "items": [
+                        {
+                            "item_id": 7
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 fake street",
+                        "city": "melbourne",
+                        "postal_code": "3000"
+                    },
+                    "total": 40.0,
+                    "date": "2025-06-03 16:22:34"
+                },
+                {
+                    "order_no": 4874,
+                    "items": [
+                        {
+                            "item_id": 2
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "123 fake st",
+                        "city": "new york",
+                        "postal_code": "3333"
+                    },
+                    "total": 1509.99,
+                    "date": "2025-06-03 16:24:23"
                 }
             ]
         }

@@ -1,7 +1,7 @@
 from models.item import Item
 from typing import List
 import random
-from models.format_items_table import print_items_table
+from utlities.format_items_table import print_items_table
 import json
 import os
 

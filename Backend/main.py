@@ -1,7 +1,7 @@
 from models.user import User, Customer, Staff
 from models.catalogue import Catalogue
 from models.cart import Cart
-from services import terminal_payment_service as payment_service
+from services import payment_service as PaymentService
 
 
 def banner():
@@ -58,7 +58,7 @@ def menu(user):
         Cart.cart_menu(user)
         menu(user)
     elif choice == "3":
-        payment_service.transaction_procedure(user)
+        PaymentService.transaction_procedure(user)
     elif choice == "4":
         print("Exiting Menu")
     else:
