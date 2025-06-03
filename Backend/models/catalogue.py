@@ -68,13 +68,13 @@ class Catalogue():
     
     @staticmethod
     def catalogue_staff():
-        catalogue = Catalogue.get_instance()
+        catalogue = Catalogue.get_instance() 
         while True:
             choice = input("\n1 - 'add' new Item\n2 - 'remove' Item\nq - quit\nchoice: ").strip().lower()
             if choice == 'q':
                 break
             elif choice == '1':
-                CatalogueService.add_item(catalogue)
+                CatalogueService.add_item(catalogue) 
             elif choice == '2':
                 CatalogueService.remove_item(catalogue)
         
