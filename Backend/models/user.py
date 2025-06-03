@@ -51,36 +51,41 @@ class User(ABC):
         email = input("Enter email: ")
         username = input("Enter username: ")
         password = input("Enter password: ")
-        if '@' in email:
-            with open("Backend/db/user_data.json", "r+") as f:
-                data = json.load(f)
-                users = data.get("users", [])
+        confirm = input("Enter 'c' to proceed, 'q' to abort: ").strip().lower()
+        if confirm == 'q':
+            return print("User creation processes aborted.")
+        elif confirm == 'c':
+            if '@' in email:
+                with open("Backend/db/user_data.json", "r+") as f:
+                    data = json.load(f)
+                    users = data.get("users", [])
 
-                existing_ids = {user["user_id"] for user in users}
-                new_id = 1
-                while new_id in existing_ids:
-                    new_id += 1
+                    existing_ids = {user["user_id"] for user in users}
+                    new_id = 1
+                    while new_id in existing_ids:
+                        new_id += 1
 
-                for user in users:
-                    if user["username"] == username:
-                        print("Username already exists.")
-                        return None
-                    if user["email"] == email:
-                        print("Email already registered.")
-                        return None
-        
-                new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": password}
-                users.append(new_user)
-                data["users"] = users
-                f.seek(0)
-                json.dump(data, f, indent=4)
-                f.truncate()
-            print(f"Account created for: {username}")
-            return new_user
-        if '@' not in email:
-            print("Invalid email. Must contain '@'")
+                    for user in users:
+                        if user["username"] == username:
+                            print("Username already exists.")
+                            return None
+                        if user["email"] == email:
+                            print("Email already registered.")
+                            return None
+            
+                    new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": password}
+                    users.append(new_user)
+                    data["users"] = users
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                print(f"Account created for: {username}")
+                return new_user
+            if '@' not in email:
+                print("Invalid email. Must contain '@'")
+                return None
+        else:
             return None
-
 
 class Customer(User):
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str = "customer"):

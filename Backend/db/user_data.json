@@ -27,6 +27,13 @@
             "email": "leo@outlook.com",
             "role": "customer",
             "password": "password"
+        },
+        {
+            "user_id": 5,
+            "username": "testquit",
+            "email": "testquit@outlook.com",
+            "role": "customer",
+            "password": "password"
         }
     ]
 }

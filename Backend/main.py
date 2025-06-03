@@ -44,42 +44,46 @@ def main():
             print(f"Unknown command: {command}")
 
 def menu(user):
-    print(f"\n======main menu======")
-    print("1 - View Catalogue")
-    print("2 - View Cart")
-    print("3 - Checkout")
-    print("4 - Exit")
-    choice = input("Enter your choice: ").strip()
-    
-    if choice == "1":
-        Catalogue.catalogue_menu(user)
-        menu(user)
-    elif choice == "2":
-        Cart.cart_menu(user)
-        menu(user)
-    elif choice == "3":
-        PaymentService.transaction_procedure(user)
-    elif choice == "4":
-        print("Exiting Menu")
-    else:
-        print(f"Unknown option: {choice}") 
+    while True:
+        print(f"\n======main menu======")
+        print("1 - View Catalogue")
+        print("2 - View Cart")
+        print("3 - Checkout")
+        print("4 - Exit")
+        choice = input("Enter your choice: ").strip()
+        
+        if choice == "1":
+            Catalogue.catalogue_menu(user)
+            menu(user)
+        elif choice == "2":
+            Cart.cart_menu(user)
+            menu(user)
+        elif choice == "3":
+            PaymentService.transaction_procedure(user)
+        elif choice == "4":
+            print("Exiting Menu")
+            break
+        else:
+            print(f"Unknown option: {choice}") 
 
 def staff_menu(user):
-    print(f"\n======Staff menu======")
-    print("1 - Manage Catalogue")
-    print("2 - Generate report")
-    print("3 - Exit")
-    choice = input("Enter your choice: ").strip()
+    while True:
+        print(f"\n======Staff menu======")
+        print("1 - Manage Catalogue")
+        print("2 - Generate report")
+        print("3 - Exit")
+        choice = input("Enter your choice: ").strip()
 
-    if choice == "1":
-        Catalogue.catalogue_staff()
-        #staff_menu(user)
-    elif choice == "2":
-        pass
-    elif choice == "3":
-        print("Exiting")
-    else:
-        print(f"Unknown option: {choice}") 
+        if choice == "1":
+            Catalogue.catalogue_staff()
+            staff_menu(user)
+        elif choice == "2":
+            pass
+        elif choice == "3":
+            print("Exiting")
+            break
+        else:
+            print(f"Unknown option: {choice}") 
 
     
     
