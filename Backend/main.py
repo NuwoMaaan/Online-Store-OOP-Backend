@@ -78,6 +78,7 @@ def staff_menu(user):
             Catalogue.catalogue_staff()
             staff_menu(user)
         elif choice == "2":
+            #generate_report() - Not implemented
             pass
         elif choice == "3":
             print("Exiting")

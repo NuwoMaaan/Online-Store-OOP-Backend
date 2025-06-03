@@ -95,4 +95,4 @@ class Customer(User):
 
 class Staff(User):
     def __init__(self, user_id: int, username: str, password: str, email: str, role: str = "staff"):
-        super().__init__(user_id, username, email, role, password)
+        super().__init__(user_id, username, email, role, password)      

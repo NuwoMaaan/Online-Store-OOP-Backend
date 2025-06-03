@@ -2,13 +2,7 @@ from typing import List
 from models.item import Item
 from models.order import Order
 from services import payment_service as PaymentService
-from utlities.format_items_table import print_items_table
-from models.catalogue import Catalogue
-import json
-import os
 from services.cart_service import CartService
-
-cart_db_file = "Backend\db\cart_data.json"
 
 class Cart:
     def __init__(self, customer_id: int):
@@ -32,50 +26,7 @@ class Cart:
     
     def clear_cart_payment(self):
         return CartService.clear_cart_payment(self)
-    # def clear_cart_payment(self):
-    #     with open(cart_db_file, 'r') as f:
-    #         data = json.load(f)
-    #     carts = data.get("carts", [])
-    #     carts = [cart for cart in carts if cart["customer_id"] != self.customer_id]
-    #     carts.clear()
-    #     data["carts"] = carts
-    #     with open(cart_db_file, "w") as f:
-    #         json.dump(data, f, indent=4)
-
-
-    # def save_cart(self):
-    #     if os.path.exists(cart_db_file):
-    #         with open(cart_db_file, "r") as f:
-    #             data = json.load(f)
-    #     else:
-    #         data = {"carts": []}
-    #     carts = data.get("carts", [])
-    #     carts = [cart for cart in carts if cart["customer_id"] != self.customer_id]
-    #     carts.append({
-    #         "customer_id": self.customer_id,
-    #         "items": [{"item_id": str(item.item_id)} for item in self.items]
-    #     })
-    #     data["carts"] = carts
-    #     with open(cart_db_file, "w") as f:
-    #         json.dump(data, f, indent=4)
-
-
-    # def load_cart(self):
-    #     with open(cart_db_file, "r") as f:
-    #         data = json.load(f)
-    #         carts = data.get("carts", [])
-    #         user_cart = next((cart for cart in carts if cart["customer_id"] == self.customer_id), None)
-    #         if user_cart:
-    #             catalogue = Catalogue.get_instance()
-    #             self.items = []
-    #             for item in user_cart["items"]:
-    #                 item_obj = catalogue.get_item_by_id(int(item["item_id"]))
-    #                 if item_obj:
-    #                     self.items.append(item_obj)
-    #         else:
-    #             self.items = []
-            
-    
+       
     def get_shipping_details(self):
         address = input("Enter shipping address: ")
         city = input("Enter city: ")
@@ -86,7 +37,6 @@ class Cart:
             "postal_code": postal_code
         }
         
-
     def checkout(self):
         if not self.items:
             print("Cart it empty. Add Items first before checkout.")

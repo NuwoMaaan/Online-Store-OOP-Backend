@@ -24,4 +24,29 @@ class OrderService():
         with open(db_file, "w") as f:
             json.dump(data, f, indent=4)
 
+
     
+# EXAMPLE STRUCTURE OF ORDERS IN DB
+# {
+#   "ordersDB": [
+#         {
+#       "customer_id": 1,
+#       "orders": [
+#         {
+#           "order_no": 101,
+#           "items": [
+#             {"item_id": 2},
+#             {"item_id": 5}
+#           ],
+#           "shipping_details": {
+#             "address": "123 Main St",
+#             "city": "Melbourne",
+#             "postal_code": "3000"
+#           },
+#           "total": 1549.98,
+#           "date": "2025-06-03 04:20:18"
+#         }
+#       ]
+#     }
+#   ]
+# }

@@ -3,8 +3,6 @@ from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
 
-data_file = "Backend\db\mock_data.json"
-
 class Catalogue():
     __instance = None
     def __init__(self, data_file = "Backend\db\mock_data.json"):
@@ -77,59 +75,6 @@ class Catalogue():
                 CatalogueService.add_item(catalogue) 
             elif choice == '2':
                 CatalogueService.remove_item(catalogue)
-        
-    # def remove_item(self):
-    #     self.view_catalogue()
-    #     while True:
-    #         item_id = input("Enter Item ID to remove (or 'q' to quit): ").strip().lower()
-    #         if item_id == 'q':
-    #             break
-    #         try:
-    #             item_id = int(item_id)
-    #             remove_item = self.get_item_by_id(item_id)
-    #             if remove_item:
-    #                 self.items = [item for item in self.items if item.item_id != item_id]
-    #                 with open(data_file, "r") as f:
-    #                     data = json.load(f)
-    #                 db_items = data.get("items", [])
-    #                 db_items = [item for item in db_items if int(item["item_id"]) != item_id]
-    #                 data["items"] = db_items
-    #                 with open(data_file, "w") as f:
-    #                     json.dump(data, f, indent=4)
-    #                 print(f"Removed Item ID: {item_id}")
-    #                 break
-    #             else:
-    #                 print(f"Item with ID {item_id} not found.")
-    #         except ValueError:
-    #             print("Invalid item ID. Please enter a valid number or 'q' to quit.")
-
-
-    # def add_item(self):
-    #     self.view_catalogue()
-    #     name = input("Enter item name: ")
-    #     price = float(input("Enter item price: "))
-    #     quantity = input("Enter item quantity: ") #quantity is not an attribute of Item and has not current functionality. i.e. does not decrement or checked at order processing.
-        
-    #     with open(data_file, "r") as f:
-    #         data = json.load(f)
-    #     items = data.get("items", [])
-    #     last_id = data.get("total_history_id_count", 0) #ensures that element add has item_id + 1 of total historic elements, meaning no duplicated item_id even if Item has been removed.
-    #     new_id = last_id + 1
-    #     items.append({
-    #         "item_id": new_id,
-    #         "name": name,
-    #         "price": price,
-    #         "quantity": quantity
-    #     })
-    #     data["items"] = items
-    #     data["total_history_id_count"] = new_id
-    #     with open(data_file, "w") as f:
-    #         json.dump(data, f, indent=4)
-    #     print(f"\nItem '{name}' added to catalogue with ID {new_id}.")
-
-    #     new_item_obj = Item(new_id, name, price)
-    #     self.items.append(new_item_obj) #this adds to it into (memory - self.items = []) (Maybe redundant?)
-            
         
 
 

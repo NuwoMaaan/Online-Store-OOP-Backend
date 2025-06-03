@@ -1,5 +1,7 @@
 
 
+#Function that is used to format items display so that what ever length name of Item, the table remains formatted nicely. 
+
 def print_items_table(items):
     if not items:
         print("No items to display.")

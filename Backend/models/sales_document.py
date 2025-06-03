@@ -1,6 +1,5 @@
 import datetime
 import random
-from models.order import Order
 from utlities.format_items_table import print_items_table
 
 
@@ -21,6 +20,8 @@ class SalesDocument():
             if display_key == 'card number':
                 value = str(value)[-4:]
                 print(f"Card ending in: ************{value}")
+                continue                                        #Keeping sensitive information hidden
+            if display_key == 'expiry date':
                 continue
             print(f"{display_key}: {value}")
         print_items_table(order.items)

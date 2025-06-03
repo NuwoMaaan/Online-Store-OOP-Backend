@@ -38,7 +38,7 @@ class CatalogueService():
         catalogue.view_catalogue()
         name = input("Enter item name: ")
         price = float(input("Enter item price: "))
-        quantity = input("Enter item quantity: ") #quantity is not an attribute of Item and has not current functionality. i.e. does not decrement or checked at order processing.
+        quantity = input("Enter item quantity: ") #quantity is not an attribute of Item and has no current functionality. i.e. does not decrement or checked at order processing.
         
         with open(data_file, "r") as f:
             data = json.load(f)
