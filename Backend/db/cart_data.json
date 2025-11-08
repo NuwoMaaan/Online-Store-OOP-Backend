@@ -1,13 +1,3 @@
 {
-    "carts": [
-        {
-            "user_id": 1,
-            "items": [
-                {
-                    "product_id": 101,
-                    "quantity": 2
-                }
-            ]
-        }
-    ]
+    "carts": []
 }

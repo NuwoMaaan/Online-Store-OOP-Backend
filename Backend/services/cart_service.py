@@ -1,46 +1,55 @@
-
 import json
-from models.cart import Cart
+import os
+from models.catalogue import Catalogue
 
-class CartService:
-    def __init__(self, db_path="db/cart_data.json"):
-        self.db_path = db_path
-        self.carts = self.load_carts()
+cart_db_file = "Backend\db\cart_data.json"
 
-    def load_carts(self):
-        try:
-            with open(self.db_path, "r") as f:
+class CartService():
+
+    @staticmethod
+    def clear_cart_payment(cart_instance):
+        with open(cart_db_file, 'r') as f:
+            data = json.load(f)
+        carts = data.get("carts", [])
+        carts = [cart for cart in carts if cart["customer_id"] != cart_instance.customer_id]
+        carts.clear()
+        data["carts"] = carts
+        with open(cart_db_file, "w") as f:
+            json.dump(data, f, indent=4)
+
+    @staticmethod
+    def save_cart(cart_instance):
+        if os.path.exists(cart_db_file):
+            with open(cart_db_file, "r") as f:
                 data = json.load(f)
-                return [Cart.from_dict(c) for c in data.get("carts", [])]
-        except FileNotFoundError:
-            return []
+        else:
+            data = {"carts": []}
+        carts = data.get("carts", [])
+        carts = [cart for cart in carts if cart["customer_id"] != cart_instance.customer_id]
+        carts.append({
+            "customer_id": cart_instance.customer_id,
+            "items": [{"item_id": str(item.item_id)} for item in cart_instance.items]
+        })
+        data["carts"] = carts
+        with open(cart_db_file, "w") as f:
+            json.dump(data, f, indent=4)
 
-    def save_carts(self):
-        with open(self.db_path, "w") as f:
-            json.dump({"carts": [c.to_dict() for c in self.carts]}, f, indent=4)
-
-    def get_cart_by_user_id(self, user_id: int):
-        for cart in self.carts:
-            if cart.user_id == user_id:
-                return cart
-        new_cart = Cart(user_id)
-        self.carts.append(new_cart)
-        return new_cart
-
-    def add_to_cart(self, user_id: int, product_id: int, quantity: int):
-        cart = self.get_cart_by_user_id(user_id)
-        cart.add_item(product_id, quantity)
-        self.save_carts()
-        return cart
-
-    def remove_from_cart(self, user_id: int, product_id: int):
-        cart = self.get_cart_by_user_id(user_id)
-        cart.remove_item(product_id)
-        self.save_carts()
-        return cart
-
-    def clear_user_cart(self, user_id: int):
-        cart = self.get_cart_by_user_id(user_id)
-        cart.clear_cart()
-        self.save_carts()
-        return cart
+    @staticmethod
+    def load_cart(cart_instance):
+        with open(cart_db_file, "r") as f:
+            data = json.load(f)
+            carts = data.get("carts", [])
+            user_cart = next((cart for cart in carts if cart["customer_id"] == cart_instance.customer_id), None)
+            if user_cart:
+                catalogue = Catalogue.get_instance()
+                cart_instance.items = []
+                for item in user_cart["items"]:
+                    item_obj = catalogue.get_item_by_id(int(item["item_id"]))
+                    if item_obj:
+                        cart_instance.items.append(item_obj)
+            else:
+                cart_instance.items = []
+    
+    @staticmethod
+    def clear(cart):
+        cart.clear_cart_payment()

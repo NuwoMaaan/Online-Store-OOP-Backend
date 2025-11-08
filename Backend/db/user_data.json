@@ -1,12 +1,39 @@
 {
     "users": [
         {
-            "id": 1,
-            "name": "Ayush",
-            "email": "ayush@example.com",
-            "address": "123 Tech Street",
-            "is_admin": false,
-            "password": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae"
+            "user_id": 1,
+            "username": "joe",
+            "email": "john@outlook.com",
+            "role": "customer",
+            "password": "password"
+        },
+        {
+            "user_id": 2,
+            "username": "test",
+            "email": "test@google.com",
+            "role": "customer",
+            "password": "password"
+        },
+        {
+            "user_id": 3,
+            "username": "staff",
+            "email": "staff@google.com",
+            "role": "staff",
+            "password": "password"
+        },
+        {
+            "user_id": 4,
+            "username": "leo",
+            "email": "leo@outlook.com",
+            "role": "customer",
+            "password": "password"
+        },
+        {
+            "user_id": 5,
+            "username": "testquit",
+            "email": "testquit@outlook.com",
+            "role": "customer",
+            "password": "password"
         }
     ]
 }

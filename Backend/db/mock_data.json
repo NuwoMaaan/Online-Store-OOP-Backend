@@ -1,44 +1,41 @@
 {
-    "products": [
+    "total_history_id_count": 9,
+    "items": [
         {
-            "id": 1,
+            "item_id": 1,
             "name": "Logitech Wireless Mouse",
-            "description": "Ergonomic design with long battery life",
             "price": 29.99,
-            "stock": 20,
-            "category": "Accessories"
+            "quantity": 100
         },
         {
-            "id": 2,
+            "item_id": 2,
             "name": "Lenovo ThinkPad X1",
-            "description": "Business-class ultrabook with Intel i7 processor",
             "price": 1499.99,
-            "stock": 6,
-            "category": "Laptops"
+            "quantity": 150
         },
         {
-            "id": 3,
+            "item_id": 3,
             "name": "Samsung Galaxy S24",
-            "description": "Latest flagship phone with AMOLED display",
             "price": 999.99,
-            "stock": 15,
-            "category": "Mobiles"
+            "quantity": 200
         },
         {
-            "id": 3,
-            "name": "Samsung Galaxy S24",
-            "description": "Latest flagship phone with AMOLED display",
+            "item_id": 4,
+            "name": "Iphone 15 Pro",
             "price": 999.99,
-            "stock": 15,
-            "category": "Mobiles"
+            "quantity": 120
         },
         {
-            "id": 101,
-            "name": "Wireless Mouse",
-            "description": "Bluetooth ergonomic mouse",
+            "item_id": 5,
+            "name": "ASUS laptop",
             "price": 49.99,
-            "stock": 100,
-            "category": "Accessories"
+            "quantity": 100
+        },
+        {
+            "item_id": 7,
+            "name": "TI-30XB",
+            "price": 30.0,
+            "quantity": "20"
         }
     ]
 }

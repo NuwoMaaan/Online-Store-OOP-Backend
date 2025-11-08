@@ -1,3 +1,122 @@
 {
-  "orders": []
+    "ordersDB": [
+        {
+            "customer_id": 1,
+            "orders": [
+                {
+                    "order_no": 101,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 5
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "123 Main St",
+                        "city": "Melbourne",
+                        "postal_code": "3000"
+                    },
+                    "total": 1549.98,
+                    "date": "2025-06-03 04:20:18"
+                },
+                {
+                    "order_no": 6082,
+                    "items": [
+                        {
+                            "item_id": 1
+                        },
+                        {
+                            "item_id": 2
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "522 fake st",
+                        "city": "new york",
+                        "postal_code": "3333"
+                    },
+                    "total": 1539.98,
+                    "date": "2025-06-03 17:12:15"
+                }
+            ]
+        },
+        {
+            "customer_id": 4,
+            "orders": [
+                {
+                    "order_no": 4784,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 3
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 fake st",
+                        "city": "new york",
+                        "postal_code": "3333"
+                    },
+                    "total": 2509.98,
+                    "date": "2025-06-03 05:02:18"
+                },
+                {
+                    "order_no": 6877,
+                    "items": [
+                        {
+                            "item_id": 7
+                        },
+                        {
+                            "item_id": 5
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 fake st",
+                        "city": "melbourne",
+                        "postal_code": "3000"
+                    },
+                    "total": 89.99,
+                    "date": "2025-06-03 18:41:45"
+                },
+                {
+                    "order_no": 5394,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 3
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 fake st",
+                        "city": "melbourne",
+                        "postal_code": "3333"
+                    },
+                    "total": 2509.98,
+                    "date": "2025-06-04 04:06:46"
+                },
+                {
+                    "order_no": 5967,
+                    "items": [
+                        {
+                            "item_id": 2
+                        },
+                        {
+                            "item_id": 3
+                        }
+                    ],
+                    "shipping_details": {
+                        "address": "5 weewewe",
+                        "city": "memeememe",
+                        "postal_code": "2222"
+                    },
+                    "total": 2509.98,
+                    "date": "2025-06-04 04:08:36"
+                }
+            ]
+        }
+    ]
 }

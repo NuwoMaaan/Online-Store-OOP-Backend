@@ -13,4 +13,7 @@ class PaypalPayment(IPayment):
             raise ValueError("Invalid email address.")
         
     def pay(self) -> None:
-        print(f"Processing PayPal payment of ${self.amount:.2f} from account {self.email}.")
+        print(f"Processing PayPal payment of ${self.amount:.2f} from account {self.email}.\n")
+
+    # def create_salesdocument(self):
+    #     pass

@@ -1,34 +1,80 @@
-
+from models.user import Customer, Staff
 import json
-from models.user import User
 
-class UserService:
-    def __init__(self, db_path="db/user_data.json"):
-        self.db_path = db_path
-        self.users = self.load_users()
+class UserService():
+    
+    @staticmethod
+    def check_instance(user):
+        if user is None:
+            print("Login failed. Please try again.")
+        else:
+            if isinstance(user, Customer):
+                user.cart.load_cart()
+                return True
+            elif isinstance(user, Staff):
+                print("Logged in as Staff.")
+                return False
+            else:
+                print("Unknown user type.")
+            
+    @staticmethod
+    def login():
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+        with open("Backend/db/user_data.json", "r") as f:
+            data = json.load(f)
+            users = data.get("users", [])
+        for user in users:
+            if user["username"] == username and user["password"] == password:
+                print(f"Login successful. Welcome, {username}!")
+                if user["role"] == "customer":
+                    return Customer(**user)
+                elif user["role"] == "staff":
+                    return Staff(**user)
+                else:
+                    print(f"Unknown role: '{user['role']}' for user {username}")
+                    return None
+        print("Login failed. Invalid username or password.")
+        return None
 
-    def load_users(self):
-        try:
-            with open(self.db_path, "r") as f:
-                data = json.load(f)
-                return [User.from_dict(u) for u in data.get("users", [])]
-        except FileNotFoundError:
-            return []
+    @staticmethod
+    def create_new_user():
+        print("======NEW CUSTOMER ACCOUNT CREATION======")
+        email = input("Enter email: ")
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+        confirm = input("Enter 'c' to proceed, 'q' to abort: ").strip().lower()
+        if confirm == 'q':
+            return print("User creation processes aborted.")
+        elif confirm == 'c':
+            if '@' in email:
+                with open("Backend/db/user_data.json", "r+") as f:
+                    data = json.load(f)
+                    users = data.get("users", [])
 
-    def save_users(self):
-        with open(self.db_path, "w") as f:
-            json.dump({"users": [u.to_dict() for u in self.users]}, f, indent=4)
+                    existing_ids = {user["user_id"] for user in users}
+                    new_id = 1
+                    while new_id in existing_ids:
+                        new_id += 1
 
-    def register(self, user: User):
-        if any(u.email == user.email for u in self.users):
-            raise ValueError("User with this email already exists.")
-        self.users.append(user)
-        self.save_users()
-        return user
-
-    def login(self, email: str, password: str):
-        for user in self.users:
-            if user.email == email and user.check_password(password):
-                return user
-        raise ValueError("Invalid email or password.")
-
+                    for user in users:
+                        if user["username"] == username:
+                            print("Username already exists.")
+                            return None
+                        if user["email"] == email:
+                            print("Email already registered.")
+                            return None
+            
+                    new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": password}
+                    users.append(new_user)
+                    data["users"] = users
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                print(f"Account created for: {username}")
+                return new_user
+            if '@' not in email:
+                print("Invalid email. Must contain '@'")
+                return None
+        else:
+            return None

@@ -1,10 +1,9 @@
 
+from services.payment_factory import PaymentFactory
 
 class PaymentService:
-    def __init__(self, PaymentMFactory):
-        self.PaymentMfactory = PaymentMFactory
 
-    def process_payment(self, data: dict):
-        payment = self.PaymentMfactory.create_payment(**data)
-        payment.validate()
-        payment.pay()
+    @staticmethod
+    def process(order):
+        factory, kwargs = PaymentFactory.create_payment_factory(order)
+        return PaymentFactory.process_payment(factory, kwargs)

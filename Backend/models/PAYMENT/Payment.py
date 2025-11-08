@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from models.sales_document import SalesDocument
 
 class IPayment(ABC):
     
@@ -15,5 +16,7 @@ class IPayment(ABC):
     def pay(self) -> None:
         pass
 
-    def create_salesdocument(self) -> None:
-        pass
+    
+    def create_salesdocument(self):
+        return SalesDocument()
+        
