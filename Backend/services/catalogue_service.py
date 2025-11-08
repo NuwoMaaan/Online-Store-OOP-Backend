@@ -3,7 +3,7 @@ import json
 from models.item import Item
 
 
-data_file = "Backend\db\mock_data.json"
+DATABASE_PATH = "Backend/db/mock_data.json"
 
 class CatalogueService():
 
@@ -20,12 +20,12 @@ class CatalogueService():
                 remove_item = catalogue.get_item_by_id(item_id)
                 if remove_item:
                     catalogue.items = [item for item in catalogue.items if item.item_id != item_id]
-                    with open(data_file, "r") as f:
+                    with open(DATABASE_PATH, "r") as f:
                         data = json.load(f)
                     db_items = data.get("items", [])
                     db_items = [item for item in db_items if int(item["item_id"]) != item_id]
                     data["items"] = db_items
-                    with open(data_file, "w") as f:
+                    with open(DATABASE_PATH, "w") as f:
                         json.dump(data, f, indent=4)
                     print(f"Removed Item ID: {item_id}")
                     break
@@ -41,8 +41,8 @@ class CatalogueService():
         name = input("Enter item name: ")
         price = float(input("Enter item price: "))
         quantity = input("Enter item quantity: ") #quantity is not an attribute of Item and has no current functionality. i.e. does not decrement or checked at order processing.
-        
-        with open(data_file, "r") as f:
+
+        with open(DATABASE_PATH, "r") as f:
             data = json.load(f)
         items = data.get("items", [])
         last_id = data.get("total_history_id_count", 0) #ensures that element add has item_id + 1 of total historic elements, meaning no duplicated item_id even if Item has been removed.
@@ -55,7 +55,7 @@ class CatalogueService():
         })
         data["items"] = items
         data["total_history_id_count"] = new_id
-        with open(data_file, "w") as f:
+        with open(DATABASE_PATH, "w") as f:
             json.dump(data, f, indent=4)
         print(f"\nItem '{name}' added to catalogue with ID {new_id}.")
 

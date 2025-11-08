@@ -3,6 +3,7 @@ import json
 import hashlib
 import getpass
 
+DATABASE_PATH = "Backend/db/user_data.json"
 class UserService():
     
     @staticmethod
@@ -24,7 +25,7 @@ class UserService():
     def login() -> Customer | Staff | None:
         username = input("Enter username: ")
         password = getpass.getpass("Enter password: ")
-        with open("Backend/db/user_data.json", "r") as f:
+        with open(DATABASE_PATH, "r") as f:
             data = json.load(f)
             users = data.get("users", [])
         for user in users:
@@ -51,7 +52,7 @@ class UserService():
             return print("User creation processes aborted.")
         elif confirm == 'c':
             if '@' in email:
-                with open("Backend/db/user_data.json", "r+") as f:
+                with open(DATABASE_PATH, "r+") as f:
                     data = json.load(f)
                     users = data.get("users", [])
 
