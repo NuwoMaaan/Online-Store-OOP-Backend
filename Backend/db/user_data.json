@@ -2,45 +2,10 @@
     "users": [
         {
             "user_id": 1,
-            "username": "joe",
-            "email": "john@outlook.com",
-            "role": "customer",
-            "password": "password"
-        },
-        {
-            "user_id": 2,
-            "username": "test",
-            "email": "test@google.com",
-            "role": "customer",
-            "password": "password"
-        },
-        {
-            "user_id": 3,
-            "username": "staff",
-            "email": "staff@google.com",
-            "role": "staff",
-            "password": "password"
-        },
-        {
-            "user_id": 4,
             "username": "leo",
             "email": "leo@outlook.com",
             "role": "customer",
-            "password": "password"
-        },
-        {
-            "user_id": 5,
-            "username": "testquit",
-            "email": "testquit@outlook.com",
-            "role": "customer",
-            "password": "password"
-        },
-        {
-            "user_id": 6,
-            "username": "joe_Biden",
-            "email": "mmeem@outlook.com",
-            "role": "customer",
-            "password": "joe"
+            "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
         }
     ]
 }
