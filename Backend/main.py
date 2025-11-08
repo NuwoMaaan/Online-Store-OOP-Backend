@@ -8,9 +8,6 @@ from services.sales_service import SalesService
 from services.order_service import OrderService
 from services.user_service import UserService
 
-
-transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
-
 def banner():
     print(r"""
       __          ________    ____        _ _               _____ _                 
@@ -44,7 +41,7 @@ def main():
                 staff_menu(user)
 
         elif command == "2":
-            new_user = User.create_new_user()
+            new_user = UserService.create_new_user()
             if new_user is None:
                 print("Failed account creation")     
         else:

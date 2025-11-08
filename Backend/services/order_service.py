@@ -1,5 +1,6 @@
 import os
 import json
+from utlities.format_items_table import print_items_table
 
 db_file="Backend/db/order_data.json"
 
@@ -30,6 +31,18 @@ class OrderService():
         order = user.cart.checkout()
         order.order_summary()
         return order
+    
+    @staticmethod
+    def order_summary(order):
+        print("\n------Order Summary------:")
+        print(f"Order Number: #{order.order_no}")
+        print(f"Customer ID: {order.customer_id}")
+        print("Shipping details:")
+        for key,value in order.shipping_details.items():
+            print(f"{key}: {value}")
+        print("Items:")
+        print_items_table(order.items)
+        print(f"Total: ${order.total:.2f}")
 
 
     

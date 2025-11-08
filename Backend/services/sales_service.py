@@ -1,6 +1,4 @@
 
-
-
 class SalesService:
     @staticmethod
     def generate(order, payment):
