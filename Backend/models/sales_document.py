@@ -20,7 +20,7 @@ class SalesDocument():
             if display_key == 'card number':
                 value = str(value)[-4:]
                 print(f"Card ending in: ************{value}")
-                continue                                        #Keeping sensitive information hidden
+                continue                                        
             if display_key == 'expiry date':
                 continue
             print(f"{display_key}: {value}")

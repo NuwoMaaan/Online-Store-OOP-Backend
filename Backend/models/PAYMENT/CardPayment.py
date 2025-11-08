@@ -8,7 +8,6 @@ class CardPayment(IPayment):
         self.card_number = card_number
         self.expiry_date = expiry_date
 
-    #validate business logic
     def validate(self) -> None:
         if self.amount <= 0:
             raise ValueError("Amount must be positive.")

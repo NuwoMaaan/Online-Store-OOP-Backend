@@ -17,7 +17,7 @@ class Catalogue():
             Catalogue()
         return Catalogue.__instance
 
-    def load_items(self, filepath):
+    def load_items(self, filepath) -> list[Item]:
         with open(filepath, "r") as f:
             data = json.load(f)
         items = []
@@ -27,10 +27,10 @@ class Catalogue():
             items.append(Item(**item_data))
         return items
     
-    def get_item_by_id(self, item_id):
+    def get_item_by_id(self, item_id) -> Item | None:
         return next((item for item in self.items if item.item_id == item_id), None)
     
-    def get_all_items(self):
+    def get_all_items(self) -> list[Item]:
         return self.items
     
     def view_catalogue(self):

@@ -33,7 +33,7 @@ class Cart:
     def clear_cart_payment(self):
         return CartService.clear_cart_payment(self)
        
-    def get_shipping_details(self):
+    def get_shipping_details(self) -> dict:
         address = input("Enter shipping address: ")
         city = input("Enter city: ")
         postal_code = input("Enter postal code: ")
@@ -43,7 +43,7 @@ class Cart:
             "postal_code": postal_code
         }
         
-    def checkout(self):
+    def checkout(self) -> Order:
         if not self.items:
             print("Cart it empty. Add Items first before checkout.")
             return None

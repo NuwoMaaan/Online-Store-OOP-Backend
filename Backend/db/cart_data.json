@@ -2,7 +2,11 @@
     "carts": [
         {
             "customer_id": 1,
-            "items": []
+            "items": [
+                {
+                    "item_id": "5"
+                }
+            ]
         }
     ]
 }
