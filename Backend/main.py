@@ -49,6 +49,8 @@ def main():
 
 def menu(user):
     transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
+    # Load cart from previous session
+    CartService.load_cart(user.cart)
     while True:
         print(f"\n======main menu======")
         print("1 - View Catalogue")
