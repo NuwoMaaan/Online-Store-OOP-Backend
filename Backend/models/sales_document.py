@@ -27,7 +27,7 @@ class SalesDocument():
         print_items_table(order.items)
         print(f"Shipping address:"," ".join(str(value) for value in order.shipping_details.values()))
 
-        print(f"Total: ${order.total}")
+        print(f"Total: ${order.total:.2f}")
         order.save_order_to_db(str(self.date_time))
        
 
