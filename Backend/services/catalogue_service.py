@@ -3,7 +3,7 @@ import json
 from models.item import Item
 
 
-DATABASE_PATH = "Backend/db/mock_data.json"
+DATABASE_PATH = "Backend/db/mock/mock_data.json"
 
 class CatalogueService():
 

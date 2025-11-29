@@ -2,7 +2,7 @@ import json
 import os
 from models.catalogue import Catalogue
 
-DATABASE_PATH = "Backend/db/cart_data.json"
+DATABASE_PATH = "Backend/db/mock/cart_data.json"
 
 class CartService():
 

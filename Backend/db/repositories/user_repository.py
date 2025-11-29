@@ -1,10 +1,10 @@
 
-from Backend.db.connection.helper import get_cursor
+from db.connection.helper import get_cursor
 
 def create_user(user_data: dict) -> int | None:
     with get_cursor() as cur:
         sql = """
-        INSERT INTO users (username, password, email, role)
+        INSERT INTO user (username, password, email, role)
         VALUES (%s, %s, %s, %s)
         """
         values = (user_data["username"], user_data["password"], user_data["email"], user_data["role"])
@@ -14,3 +14,13 @@ def create_user(user_data: dict) -> int | None:
         except Exception as e:
             print(f"Error creating user: {e}")
             return None
+
+def get_user_by_username(username: str) -> dict | None:
+    with get_cursor() as cur:
+        sql = "SELECT user_id, username, password, email, role FROM user WHERE username = %s"
+        cur.execute(sql, (username,))
+        user = cur.fetchone()
+        return user
+
+
+        

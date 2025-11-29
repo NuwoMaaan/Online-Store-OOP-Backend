@@ -7,7 +7,6 @@ from services.payment_service import PaymentService
 from services.sales_service import SalesService
 from services.order_service import OrderService
 from services.user_service import UserService
-from db.connection.connection import connect
 
 def banner():
     print(r"""

@@ -2,6 +2,7 @@ from models.user import Customer, Staff
 import json
 import hashlib
 import getpass
+from db.repositories.user_repository import create_user, get_user_by_username
 
 DATABASE_PATH = "Backend/db/user_data.json"
 class UserService():
@@ -25,20 +26,18 @@ class UserService():
     def login() -> Customer | Staff | None:
         username = input("Enter username: ")
         password = getpass.getpass("Enter password: ")
-        with open(DATABASE_PATH, "r") as f:
-            data = json.load(f)
-            users = data.get("users", [])
-        for user in users:
-            if user["username"] == username and UserService.verify_password(user["password"], password):
-                print(f"Login successful. Welcome, {username}!")
-                if user["role"] == "customer":
-                    return Customer(**user)
-                elif user["role"] == "staff":
-                    return Staff(**user)
-                else:
-                    print(f"Unknown role: '{user['role']}' for user {username}")
-                    return None
-        print("Login failed. Invalid username or password.")
+
+        user = get_user_by_username(username)
+        if user is not None and UserService.verify_password(user["password"], password):
+            print(f"Login successful. Welcome, {username}!")
+            if user["role"] == "customer":
+                return Customer(**user)
+            elif user["role"] == "staff":
+                return Staff(**user)
+            else:
+                print(f"Unknown role: '{user['role']}' for user {username}")
+                return None
+        print("Login failed. username or password incorrect.")
         return None
 
     @staticmethod
@@ -46,37 +45,23 @@ class UserService():
         print("======NEW CUSTOMER ACCOUNT CREATION======")
         email = input("Enter email: ")
         username = input("Enter username: ")
-        password = input("Enter password: ")
+        password = UserService.hash_password(input("Enter password: "))
         confirm = input("Enter 'c' to proceed, 'q' to abort: ").strip().lower()
         if confirm == 'q':
-            return print("User creation processes aborted.")
+            return print("User creation p rocesses aborted.")
         elif confirm == 'c':
             if '@' in email:
-                with open(DATABASE_PATH, "r+") as f:
-                    data = json.load(f)
-                    users = data.get("users", [])
+                if get_user_by_username(username) is not None:
+                    print("Username already exists.")
+                    return None
+                new_user = {"username": username,
+                            "email": email,
+                            "role": "customer",
+                            "password": password}
+                new_id = create_user(new_user)
 
-                    existing_ids = {user["user_id"] for user in users}
-                    new_id = 1
-                    while new_id in existing_ids:
-                        new_id += 1
-
-                    for user in users:
-                        if user["username"] == username:
-                            print("Username already exists.")
-                            return None
-                        if user["email"] == email:
-                            print("Email already registered.")
-                            return None
-            
-                    new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": UserService.hash_password(password)}
-                    users.append(new_user)
-                    data["users"] = users
-                    f.seek(0)
-                    json.dump(data, f, indent=4)
-                    f.truncate()
                 print(f"Account created for: {username}")
-                return new_user
+                return new_id
             if '@' not in email:
                 print("Invalid email. Must contain '@'")
                 return None
