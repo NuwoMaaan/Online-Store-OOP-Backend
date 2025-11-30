@@ -1,14 +1,15 @@
-import json
+from typing import List
 from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
+from db.repositories.item_repository import create_item, get_item_by_id, get_all_items
 
 class Catalogue():
     __instance = None
-    def __init__(self, data_file = "Backend\db\mock_data.json"):
+    def __init__(self):
         if Catalogue.__instance is not None:
             raise Exception("Singleton class cannot be instantiated more than once.")
-        self.items = self.load_items(data_file)
+        self.items: List[Item] = self.load_items()
         Catalogue.__instance = self
 
     @staticmethod
@@ -17,18 +18,18 @@ class Catalogue():
             Catalogue()
         return Catalogue.__instance
 
-    def load_items(self, filepath) -> list[Item]:
-        with open(filepath, "r") as f:
-            data = json.load(f)
-        items = []
-        for item in data.get("items", []):
-            # Dont include quantity to construct Item
-            item_data = {k: v for k, v in item.items() if k != "quantity"}
-            items.append(Item(**item_data))
-        return items
+    def load_items(self) -> list[Item]:
+        item_list = get_all_items()
+        if item_list:
+            items = []
+            for item in item_list:
+                # Dont include quantity to construct Item
+                item_data = {k: v for k, v in item.items() if k != "quantity"}
+                items.append(Item(**item_data))
+            return items
     
     def get_item_by_id(self, item_id) -> Item | None:
-        return next((item for item in self.items if item.item_id == item_id), None)
+        return next((item for item in self.items if item.id == item_id), None)
     
     def get_all_items(self) -> list[Item]:
         return self.items
@@ -39,9 +40,6 @@ class Catalogue():
         if not items:
             print("No items available in the catalogue.")
             return
-        #print("Catalogue Items:")
-        # for item in items:
-        #     print(f"{item.item_id}: {item.name} - ${item.price:.2f}")
         print_items_table(items)
 
     

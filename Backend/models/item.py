@@ -1,7 +1,7 @@
 
 
 class Item():
-    def __init__(self, item_id, name, price):
-        self.item_id = item_id
+    def __init__(self, id, name, price):
+        self.id = id
         self.name = name
         self.price = price

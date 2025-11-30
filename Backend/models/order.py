@@ -29,7 +29,7 @@ class Order:
     def to_dict(self, datetime):
         return {
             "order_no": self.order_no,
-            "items": [{"item_id": item.item_id} for item in self.items],
+            "items": [{"item_id": item.id} for item in self.items],
             "shipping_details": self.shipping_details,
             "total": round(float(self.total), 2),
             "date": datetime.strftime("%Y-%m-%d %H:%M:%S") if hasattr(datetime, "strftime") else str(datetime)

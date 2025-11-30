@@ -33,6 +33,9 @@ CREATE TABLE cart_items (
     FOREIGN KEY (item_id) REFERENCES item(item_id)
 );
 
+ALTER TABLE cart_items
+ADD UNIQUE(cart_id, item_id);
+
 #--- ORDERS----
 CREATE TABLE orders (
     order_id INT NOT NULL,
@@ -53,4 +56,8 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (item_id) REFERENCES item(item_id)
 );
+
+SELECT * FROM user;
+
+
 

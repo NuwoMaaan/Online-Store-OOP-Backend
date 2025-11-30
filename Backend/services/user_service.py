@@ -3,10 +3,9 @@ import json
 import hashlib
 import getpass
 from db.repositories.user_repository import create_user, get_user_by_username
+from db.repositories.cart_repository import create_cart
 
-DATABASE_PATH = "Backend/db/user_data.json"
 class UserService():
-    
     @staticmethod
     def check_instance(user) -> bool | None:
         if user is None:
@@ -59,9 +58,10 @@ class UserService():
                             "role": "customer",
                             "password": password}
                 new_id = create_user(new_user)
-
-                print(f"Account created for: {username}")
-                return new_id
+                if new_id:
+                    print(f"Account created for: {username}")
+                    create_cart(new_id)
+                    return new_id
             if '@' not in email:
                 print("Invalid email. Must contain '@'")
                 return None
