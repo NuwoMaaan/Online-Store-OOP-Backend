@@ -29,8 +29,8 @@ class Cart:
     def get_total(self):
         return sum(item.price for item in self.items)
     
-    def clear_cart_payment(self):
-        return CartService.clear_cart_payment(self)
+    def clear_cart(self):
+        return CartService.clear_cart(self)
        
     def get_shipping_details(self) -> dict:
         address = input("Enter shipping address: ")
@@ -50,7 +50,7 @@ class Cart:
         print(f"Subtotal: {self.get_total():.2f}")
         shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
-        self.items: List[Item] = []  # Clear cart after checkout - POTENTIAL ISSUE: customer checkout failure, removes cart before with order process.
+        #self.items: List[Item] = []  # Clear cart after checkout - POTENTIAL ISSUE: customer checkout failure, removes cart before with order process.
         return order
     
     def view_cart(self):

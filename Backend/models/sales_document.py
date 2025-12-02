@@ -5,7 +5,7 @@ from utlities.format_items_table import print_items_table
 
 class SalesDocument():
     def __init__(self):
-        self.invoice_number = random.randint(6000,7000)
+        self.invoice_number = random.randint(10000,70000)
         self.date_time = datetime.datetime.now().replace(microsecond=0)
     
     def generate_sales_document(self, order):

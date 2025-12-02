@@ -7,7 +7,7 @@ DATABASE_PATH = "Backend/db/mock/cart_data.json"
 
 class CartService():
     @staticmethod
-    def clear_cart_payment(cart_instance):
+    def clear_cart(cart_instance):
         cart = get_cart_by_user_id(cart_instance.customer_id)
         if cart:
             cart_id = cart["cart_id"]
@@ -47,6 +47,3 @@ class CartService():
         #     else:
         #         cart_instance.items = []
     
-    @staticmethod
-    def clear(cart):
-        cart.clear_cart_payment()

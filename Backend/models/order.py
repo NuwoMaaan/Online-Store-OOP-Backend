@@ -14,7 +14,7 @@ class Order:
         self.total = self.subtotal + self.shipping_cost
         self.status = "pending"  # or "paid"
         self.payment = None      # IPayment object
-        self.order_no = random.randint(2000,7000)
+        self.order_no = random.randint(1000,10000)
 
     def add_payment(self, payment):
         self.payment = payment
