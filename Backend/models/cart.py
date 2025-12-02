@@ -19,13 +19,12 @@ class Cart:
     def add_item(self, item: Item):
         self.items.append(item)
         self.quantity = len(self.items)
-        CartService.save_cart(self)
+        CartService.add_item(self, item.id)
 
-    def remove_item(self, item_num_in_cart: int):
-        #self.items = [item for item in self.items if item.item_id != item_id]
+    def remove_item(self, item_num_in_cart: int, item: Item):
         self.items.pop(item_num_in_cart)
         self.quantity = len(self.items)
-        CartService.save_cart(self)
+        CartService.remove_item(self, item.id)
 
     def get_total(self):
         return sum(item.price for item in self.items)
@@ -70,14 +69,12 @@ class Cart:
             user.cart.view_cart()
             menu_choice = input("Enter 'r' to remove an item, 'c' to checkout, or 'q' to quit: ").strip().lower()
             if menu_choice == 'r':
-                item_num = input("Enter item number to remove: ").strip()
+                item_num = int(input("Enter item number to remove: ").strip()) - 1 # Adjust for 0-based index
                 try:
-                    item_num = int(item_num)
-                    if 1 <= item_num <= len(user.cart.items):
-                        item_to_remove = user.cart.items[item_num - 1]
-                        user.cart.remove_item(item_num - 1)
-                        user.cart.quantity = len(user.cart.items)
-                        print(f"Removed {item_to_remove.name} from your cart.")
+                    if 0 <= item_num <= len(user.cart.items):
+                        item = user.cart.items[item_num]
+                        user.cart.remove_item(item_num, item)
+                        print(f"Removed {item.name} from your cart.")
                     else:
                         print("Invalid item number.")
                 except ValueError:

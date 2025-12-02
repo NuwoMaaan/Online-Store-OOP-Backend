@@ -9,11 +9,11 @@ CREATE TABLE user (
 );
 
 CREATE TABLE item (
-	item_id int NOT NULL AUTO_INCREMENT,
-    item_name varchar(255),
+	id int NOT NULL AUTO_INCREMENT,
+    name varchar(255),
     price DECIMAL(10, 2),
     quantity INT,
-    PRIMARY KEY (item_id)
+    PRIMARY KEY (id)
 );
 
 # ---- CART ----
@@ -24,17 +24,16 @@ CREATE TABLE cart (
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 CREATE TABLE cart_items (
-    cart_item_id INT NOT NULL AUTO_INCREMENT,
     cart_id INT NOT NULL,
     item_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
-    PRIMARY KEY (cart_item_id),
+    PRIMARY KEY (cart_id, item_id),
     FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
-    FOREIGN KEY (item_id) REFERENCES item(item_id)
+    FOREIGN KEY (item_id) REFERENCES item(id)
 );
 
-ALTER TABLE cart_items
-ADD UNIQUE(cart_id, item_id);
+
+
 
 #--- ORDERS----
 CREATE TABLE orders (

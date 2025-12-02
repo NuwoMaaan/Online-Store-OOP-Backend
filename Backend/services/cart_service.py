@@ -1,7 +1,7 @@
 import json
 import os
 from models.catalogue import Catalogue
-from db.repositories.cart_repository import get_cart_by_user_id, delete_cart_by_cart_id, save_cart_by_cart_id
+from db.repositories.cart_repository import get_cart_by_user_id, decrement_item_quantity, increment_item_quantity, remove_all_by_cart_id
 
 DATABASE_PATH = "Backend/db/mock/cart_data.json"
 
@@ -11,14 +11,21 @@ class CartService():
         cart = get_cart_by_user_id(cart_instance.customer_id)
         if cart:
             cart_id = cart["cart_id"]
-            delete_cart_by_cart_id(cart_id)
-
+            remove_all_by_cart_id(cart_id)
+    
     @staticmethod
-    def save_cart(cart_instance):
+    def remove_item(cart_instance, item_id):
         cart = get_cart_by_user_id(cart_instance.customer_id)
         if cart:
             cart_id = cart["cart_id"]
-            save_cart_by_cart_id(cart_id, cart_instance.items)
+            decrement_item_quantity(cart_id, item_id)
+
+    @staticmethod
+    def add_item(cart_instance, item_id):
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            increment_item_quantity(cart_id, item_id)
 
     @staticmethod
     def load_cart(cart_instance):
