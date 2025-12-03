@@ -36,6 +36,7 @@ def main():
         elif command == "1":  
            user = UserService.login()
            if isinstance(user, Customer):
+                CartService.load_cart(user.cart)
                 menu(user)
            elif isinstance(user, Staff):
                 staff_menu(user)
@@ -50,7 +51,6 @@ def main():
 def menu(user):
     transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
     # Load cart from previous session
-    #CartService.load_cart(user.cart)
     while True:
         print(f"\n======main menu======")
         print("1 - View Catalogue")

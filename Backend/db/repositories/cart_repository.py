@@ -1,25 +1,26 @@
 from db.connection.helper import get_cursor
 from models.item import Item
+from typing import List
 
-def create_cart(user_id: int):
+def create_cart(user_id: int) -> None:
     with get_cursor() as cur:
         sql = "INSERT INTO cart (user_id) VALUES (%s)"
         cur.execute(sql, (user_id,))
         #return cur.lastrowid
 
-def get_cart_by_user_id(user_id: int) -> dict | None:
+def get_cart_by_user_id(user_id: int) -> dict[str, int] | None:
     with get_cursor() as cur:
         sql = "SELECT cart_id, user_id FROM cart WHERE user_id = %s"
         cur.execute(sql, (user_id,))
         cart = cur.fetchone()
         return cart
 
-def remove_all_by_cart_id(cart_id: int):
+def remove_all_items(cart_id: int) -> None:
     with get_cursor() as cur:
         sql = "DELETE FROM cart_items WHERE cart_id = %s"
         cur.execute(sql, (cart_id,))
 
-def decrement_item_quantity(cart_id: int, item_id: int):
+def decrement_item_quantity(cart_id: int, item_id: int) -> None:
     with get_cursor() as cur:
         sql = "SELECT quantity FROM cart_items WHERE cart_id = %s AND item_id = %s"
         cur.execute(sql, (cart_id, item_id))
@@ -34,7 +35,7 @@ def decrement_item_quantity(cart_id: int, item_id: int):
             sql = "DELETE FROM cart_items WHERE cart_id = %s AND item_id = %s"
             cur.execute(sql, (cart_id, item_id))
 
-def increment_item_quantity(cart_id: int, item_id: int):
+def increment_item_quantity(cart_id: int, item_id: int) -> None:
     with get_cursor() as cur:
         sql = "SELECT quantity FROM cart_items WHERE cart_id = %s AND item_id = %s"
         cur.execute(sql, (cart_id, item_id))
@@ -48,6 +49,12 @@ def increment_item_quantity(cart_id: int, item_id: int):
         cur.execute(sql, (new_qty, cart_id, item_id))
 
 
-def load_cart_by_cart_id(cart_id: int) -> list[Item]:
+def load_cart_db(cart_id: int) -> List[dict[str, int]] | None:
     with get_cursor() as cur:
-        pass
+        sql = "SELECT item_id, quantity FROM cart_items WHERE cart_id = %s"
+        cur.execute(sql, (cart_id,))
+        cart = cur.fetchall()
+        if not cart:
+            return
+        return cart
+        

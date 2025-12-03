@@ -1,9 +1,13 @@
-import json
-import os
+from db.repositories.cart_repository import (
+    get_cart_by_user_id, 
+    decrement_item_quantity, 
+    increment_item_quantity, 
+    remove_all_items,
+    load_cart_db
+    )
+from typing import List
 from models.catalogue import Catalogue
-from db.repositories.cart_repository import get_cart_by_user_id, decrement_item_quantity, increment_item_quantity, remove_all_by_cart_id
 
-DATABASE_PATH = "Backend/db/mock/cart_data.json"
 
 class CartService():
     @staticmethod
@@ -11,7 +15,7 @@ class CartService():
         cart = get_cart_by_user_id(cart_instance.customer_id)
         if cart:
             cart_id = cart["cart_id"]
-            remove_all_by_cart_id(cart_id)
+            remove_all_items(cart_id)
     
     @staticmethod
     def remove_item(cart_instance, item_id):
@@ -29,21 +33,18 @@ class CartService():
 
     @staticmethod
     def load_cart(cart_instance):
-        pass
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            cart_items = load_cart_db(cart_id)
+            if cart_items:
+                catalogue = Catalogue.get_instance() 
+                for item in cart_items:
+                    item_obj = catalogue.get_item_by_id(int(item["item_id"]))
+                    for _ in range(item["quantity"]):
+                        if item_obj:
+                            cart_instance.items.append(item_obj)
+                cart_instance.quantity = len(cart_instance.items)
 
-        # need to implement 
-        
-        # with open(DATABASE_PATH, "r") as f:
-        #     data = json.load(f)
-        #     carts = data.get("carts", [])
-        #     user_cart = next((cart for cart in carts if cart["customer_id"] == cart_instance.customer_id), None)
-        #     if user_cart:
-        #         catalogue = Catalogue.get_instance()
-        #         cart_instance.items = []
-        #         for item in user_cart["items"]:
-        #             item_obj = catalogue.get_item_by_id(int(item["item_id"]))
-        #             if item_obj:
-        #                 cart_instance.items.append(item_obj)
-        #     else:
-        #         cart_instance.items = []
+
     

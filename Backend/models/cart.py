@@ -30,6 +30,7 @@ class Cart:
         return sum(item.price for item in self.items)
     
     def clear_cart(self):
+        self.items = []
         return CartService.clear_cart(self)
        
     def get_shipping_details(self) -> dict:
@@ -58,7 +59,6 @@ class Cart:
             print("Your cart is empty.")
             return
         print(f"\nItems in your cart {self.quantity}:")
-        #print_items_table(self.items)
         print(f"{'No.':<4} {'Name':<20} {'Price':>8}")
         for idx, item in enumerate(self.items, 1):
             print(f"{idx:<4} {item.name:<20} ${item.price:>7.2f}")
