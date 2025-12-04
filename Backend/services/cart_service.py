@@ -5,7 +5,6 @@ from db.repositories.cart_repository import (
     remove_all_items,
     load_cart_db
     )
-from typing import List
 from models.catalogue import Catalogue
 
 

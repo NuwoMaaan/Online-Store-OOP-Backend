@@ -1,4 +1,3 @@
-
 CREATE TABLE user (
 	user_id int NOT NULL AUTO_INCREMENT,
     username varchar(255) NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE user (
     email varchar(255) NOT NULL, 
     PRIMARY KEY (user_id)
 );
-
 CREATE TABLE item (
 	id int NOT NULL AUTO_INCREMENT,
     name varchar(255),
@@ -32,12 +30,9 @@ CREATE TABLE cart_items (
     FOREIGN KEY (item_id) REFERENCES item(id)
 );
 
-
-
-
 #--- ORDERS----
 CREATE TABLE orders (
-    order_id INT NOT NULL,
+    order_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     date DATETIME NOT NULL,
@@ -51,12 +46,14 @@ CREATE TABLE order_items (
     order_item_id INT NOT NULL AUTO_INCREMENT,
     order_id INT NOT NULL,
     item_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price_each DECIMAL(10,2) NOT NULL,
+    line_total DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (order_item_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (item_id) REFERENCES item(item_id)
+    FOREIGN KEY (item_id) REFERENCES item(id)
 );
 
-SELECT * FROM user;
 
 
 

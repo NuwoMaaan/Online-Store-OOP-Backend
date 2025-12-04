@@ -33,7 +33,7 @@ class Cart:
         self.items = []
         return CartService.clear_cart(self)
        
-    def get_shipping_details(self) -> dict:
+    def get_shipping_details(self) -> dict[str, str]:
         address = input("Enter shipping address: ")
         city = input("Enter city: ")
         postal_code = input("Enter postal code: ")
@@ -51,7 +51,6 @@ class Cart:
         print(f"Subtotal: {self.get_total():.2f}")
         shipping_details = self.get_shipping_details()
         order = Order(self.customer_id, self.items.copy(), shipping_details)
-        #self.items: List[Item] = []  # Clear cart after checkout - POTENTIAL ISSUE: customer checkout failure, removes cart before with order process.
         return order
     
     def view_cart(self):

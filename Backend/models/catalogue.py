@@ -2,7 +2,7 @@ from typing import List
 from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
-from db.repositories.item_repository import create_item, get_item_by_id, get_all_items
+from db.repositories.item_repository import get_all_items
 
 class Catalogue():
     __instance = None
