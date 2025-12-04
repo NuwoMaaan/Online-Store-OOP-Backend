@@ -6,7 +6,7 @@ class IPayment(ABC):
     def process(self) -> None:
         self.validate()
         self.pay()
-        self.create_salesdocument
+        self.create_salesdocument()
 
     @abstractmethod
     def validate(self) -> None:

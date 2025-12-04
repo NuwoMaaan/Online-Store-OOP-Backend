@@ -3,13 +3,12 @@ import json
 from models.item import Item
 
 
-DATABASE_PATH = "Backend/db/mock_data.json"
+DATABASE_PATH = "Backend/db/mock/mock_data.json"
 
 class CatalogueService():
 
     @staticmethod
-    def remove_item(catalogue_instance):
-        catalogue = catalogue_instance.get_instance()
+    def remove_item(catalogue):
         catalogue.view_catalogue()
         while True:
             item_id = input("Enter Item ID to remove (or 'q' to quit): ").strip().lower()
@@ -35,8 +34,7 @@ class CatalogueService():
                 print("Invalid item ID. Please enter a valid number or 'q' to quit.")
                 
     @staticmethod
-    def add_item(catalogue_instance):
-        catalogue = catalogue_instance.get_instance()
+    def add_item(catalogue):
         catalogue.view_catalogue()
         name = input("Enter item name: ")
         price = float(input("Enter item price: "))

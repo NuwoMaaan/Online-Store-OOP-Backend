@@ -18,5 +18,7 @@ class TransactionFacade:
             return
 
         order.add_payment(payment)
-        self.sales_service.generate(order, payment)
-        self.cart_service.clear(user.cart)
+        if self.order_service.complete_order(order):
+            self.sales_service.generate(order, payment)
+        user.orders.clear()
+        user.cart.clear_cart()

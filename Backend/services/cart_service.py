@@ -1,55 +1,49 @@
-import json
-import os
+from db.repositories.cart_repository import (
+    get_cart_by_user_id, 
+    decrement_item_quantity, 
+    increment_item_quantity, 
+    remove_all_items,
+    load_cart_db
+    )
 from models.catalogue import Catalogue
 
-DATABASE_PATH = "Backend/db/cart_data.json"
 
 class CartService():
+    @staticmethod
+    def clear_cart(cart_instance):
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            remove_all_items(cart_id)
+    
+    @staticmethod
+    def remove_item(cart_instance, item_id):
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            decrement_item_quantity(cart_id, item_id)
 
     @staticmethod
-    def clear_cart_payment(cart_instance):
-        with open(DATABASE_PATH, 'r') as f:
-            data = json.load(f)
-        carts = data.get("carts", [])
-        carts = [cart for cart in carts if cart["customer_id"] != cart_instance.customer_id]
-        carts.clear()
-        data["carts"] = carts
-        with open(DATABASE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
-
-    @staticmethod
-    def save_cart(cart_instance):
-        if os.path.exists(DATABASE_PATH):
-            with open(DATABASE_PATH, "r") as f:
-                data = json.load(f)
-        else:
-            data = {"carts": []}
-        carts = data.get("carts", [])
-        carts = [cart for cart in carts if cart["customer_id"] != cart_instance.customer_id]
-        carts.append({
-            "customer_id": cart_instance.customer_id,
-            "items": [{"item_id": str(item.item_id)} for item in cart_instance.items]
-        })
-        data["carts"] = carts
-        with open(DATABASE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+    def add_item(cart_instance, item_id):
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            increment_item_quantity(cart_id, item_id)
 
     @staticmethod
     def load_cart(cart_instance):
-        with open(DATABASE_PATH, "r") as f:
-            data = json.load(f)
-            carts = data.get("carts", [])
-            user_cart = next((cart for cart in carts if cart["customer_id"] == cart_instance.customer_id), None)
-            if user_cart:
-                catalogue = Catalogue.get_instance()
-                cart_instance.items = []
-                for item in user_cart["items"]:
+        cart = get_cart_by_user_id(cart_instance.customer_id)
+        if cart:
+            cart_id = cart["cart_id"]
+            cart_items = load_cart_db(cart_id)
+            if cart_items:
+                catalogue = Catalogue.get_instance() 
+                for item in cart_items:
                     item_obj = catalogue.get_item_by_id(int(item["item_id"]))
-                    if item_obj:
-                        cart_instance.items.append(item_obj)
-            else:
-                cart_instance.items = []
+                    for _ in range(item["quantity"]):
+                        if item_obj:
+                            cart_instance.items.append(item_obj)
+                cart_instance.quantity = len(cart_instance.items)
+
+
     
-    @staticmethod
-    def clear(cart):
-        cart.clear_cart_payment()

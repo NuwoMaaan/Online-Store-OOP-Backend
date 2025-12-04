@@ -1,30 +1,19 @@
-import os
-import json
 from utlities.format_items_table import print_items_table
-
-DATABASE_PATH="Backend/db/order_data.json"
+from db.repositories.transaction_repository import insert_order, insert_order_items
 
 class OrderService():
 
     @staticmethod
-    def save_order_to_db(order, datetime):
-        if os.path.exists(DATABASE_PATH):
-            with open(DATABASE_PATH, "r") as f:
-                data = json.load(f)
-        else:
-            data = {"ordersDB": []}
-        # Find user entry or create new
-        user_entry = next((u for u in data["ordersDB"] if u["customer_id"] == order.customer_id), None)
-        order_dict = order.to_dict(datetime)
-        if user_entry:
-            user_entry["orders"].append(order_dict)
-        else:
-            data["ordersDB"].append({
-                "customer_id": order.customer_id,
-                "orders": [order_dict]
-            })
-        with open(DATABASE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+    def complete_order(order):
+        order_id = insert_order(order)
+        if order_id:
+            order.order_no = order_id
+            insert_order_items(order_id, order.items)
+            print("\nOrder completed successfully.")
+            return True
+        return False
+        
+        
 
     @staticmethod
     def checkout(user):
@@ -38,7 +27,6 @@ class OrderService():
     @staticmethod
     def order_summary(order):
         print("\n------Order Summary------:")
-        print(f"Order Number: #{order.order_no}")
         print(f"Customer ID: {order.customer_id}")
         print("Shipping details:")
         for key,value in order.shipping_details.items():
@@ -46,30 +34,3 @@ class OrderService():
         print("Items:")
         print_items_table(order.items)
         print(f"Total: ${order.total:.2f}")
-
-
-    
-# EXAMPLE STRUCTURE OF ORDERS IN DB
-# {
-#   "ordersDB": [
-#         {
-#       "customer_id": 1,
-#       "orders": [
-#         {
-#           "order_no": 101,
-#           "items": [
-#             {"item_id": 2},
-#             {"item_id": 5}
-#           ],
-#           "shipping_details": {
-#             "address": "123 Main St",
-#             "city": "Melbourne",
-#             "postal_code": "3000"
-#           },
-#           "total": 1549.98,
-#           "date": "2025-06-03 04:20:18"
-#         }
-#       ]
-#     }
-#   ]
-# }
