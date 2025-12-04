@@ -1,10 +1,13 @@
 from models.user import Customer, Staff
 import json
+import hashlib
+import getpass
 
+DATABASE_PATH = "Backend/db/user_data.json"
 class UserService():
     
     @staticmethod
-    def check_instance(user):
+    def check_instance(user) -> bool | None:
         if user is None:
             print("Login failed. Please try again.")
         else:
@@ -16,16 +19,17 @@ class UserService():
                 return False
             else:
                 print("Unknown user type.")
-            
+            return None
+        
     @staticmethod
-    def login():
+    def login() -> Customer | Staff | None:
         username = input("Enter username: ")
-        password = input("Enter password: ")
-        with open("Backend/db/user_data.json", "r") as f:
+        password = getpass.getpass("Enter password: ")
+        with open(DATABASE_PATH, "r") as f:
             data = json.load(f)
             users = data.get("users", [])
         for user in users:
-            if user["username"] == username and user["password"] == password:
+            if user["username"] == username and UserService.verify_password(user["password"], password):
                 print(f"Login successful. Welcome, {username}!")
                 if user["role"] == "customer":
                     return Customer(**user)
@@ -38,7 +42,7 @@ class UserService():
         return None
 
     @staticmethod
-    def create_new_user():
+    def create_new_user() -> dict | None:
         print("======NEW CUSTOMER ACCOUNT CREATION======")
         email = input("Enter email: ")
         username = input("Enter username: ")
@@ -48,7 +52,7 @@ class UserService():
             return print("User creation processes aborted.")
         elif confirm == 'c':
             if '@' in email:
-                with open("Backend/db/user_data.json", "r+") as f:
+                with open(DATABASE_PATH, "r+") as f:
                     data = json.load(f)
                     users = data.get("users", [])
 
@@ -65,7 +69,7 @@ class UserService():
                             print("Email already registered.")
                             return None
             
-                    new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": password}
+                    new_user = {"user_id": new_id,"username": username,"email": email,"role": "customer","password": UserService.hash_password(password)}
                     users.append(new_user)
                     data["users"] = users
                     f.seek(0)
@@ -78,3 +82,11 @@ class UserService():
                 return None
         else:
             return None
+        
+    @staticmethod
+    def hash_password(password: str) -> str:
+        return hashlib.sha256(password.encode("utf-8")).hexdigest()
+    
+    @staticmethod
+    def verify_password(password: str, input: str) -> bool:
+        return password == UserService.hash_password(input)

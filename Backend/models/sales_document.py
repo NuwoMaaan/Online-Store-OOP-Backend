@@ -20,14 +20,14 @@ class SalesDocument():
             if display_key == 'card number':
                 value = str(value)[-4:]
                 print(f"Card ending in: ************{value}")
-                continue                                        #Keeping sensitive information hidden
+                continue                                        
             if display_key == 'expiry date':
                 continue
             print(f"{display_key}: {value}")
         print_items_table(order.items)
         print(f"Shipping address:"," ".join(str(value) for value in order.shipping_details.values()))
 
-        print(f"Total: ${order.total}")
+        print(f"Total: ${order.total:.2f}")
         order.save_order_to_db(str(self.date_time))
        
 

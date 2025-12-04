@@ -8,8 +8,10 @@ class TransactionFacade:
 
     def process(self, user):
         order = self.order_service.checkout(user)
+        if not order:
+            return
+            
         user.orders.append(order)
-
         payment = self.payment_service.process(order)
         if not payment:
             print("Transaction failed.")

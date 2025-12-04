@@ -1,6 +1,5 @@
 from models.cart import Cart
 from abc import ABC
-import json
 
 
 class User(ABC):

@@ -1,14 +1,15 @@
 import os
 import json
+from utlities.format_items_table import print_items_table
 
-db_file="Backend/db/order_data.json"
+DATABASE_PATH="Backend/db/order_data.json"
 
 class OrderService():
 
     @staticmethod
     def save_order_to_db(order, datetime):
-        if os.path.exists(db_file):
-            with open(db_file, "r") as f:
+        if os.path.exists(DATABASE_PATH):
+            with open(DATABASE_PATH, "r") as f:
                 data = json.load(f)
         else:
             data = {"ordersDB": []}
@@ -22,14 +23,29 @@ class OrderService():
                 "customer_id": order.customer_id,
                 "orders": [order_dict]
             })
-        with open(db_file, "w") as f:
+        with open(DATABASE_PATH, "w") as f:
             json.dump(data, f, indent=4)
 
     @staticmethod
     def checkout(user):
+        if not user.cart.items:
+            print("\nCart is empty. Please add items to your cart before checkout.")
+            return None
         order = user.cart.checkout()
         order.order_summary()
         return order
+    
+    @staticmethod
+    def order_summary(order):
+        print("\n------Order Summary------:")
+        print(f"Order Number: #{order.order_no}")
+        print(f"Customer ID: {order.customer_id}")
+        print("Shipping details:")
+        for key,value in order.shipping_details.items():
+            print(f"{key}: {value}")
+        print("Items:")
+        print_items_table(order.items)
+        print(f"Total: ${order.total:.2f}")
 
 
     
