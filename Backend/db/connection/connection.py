@@ -1,4 +1,5 @@
 from mysql.connector import pooling, Error
+from db.connection.config import settings
 
 _pool = None
 
@@ -11,11 +12,11 @@ def connection():
     global _pool
     if _pool is None:
         init_pool(
-            host="localhost",
-            user="root",
-            password="Pa55w.rd",
-            database="online_store",
-            pool_size=5,
+            host=settings.HOST,
+            user=settings.USER,
+            password=settings.PASSWORD,
+            database=settings.DATABASE,
+            pool_size=settings.POOL_SIZE,
         )
     try:
         return _pool.get_connection()
