@@ -49,7 +49,6 @@ def main():
             print(f"Unknown command: {command}")
 
 def menu(user):
-    transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
     while True:
         print(f"\n======main menu======")
         print("1 - View Catalogue")
@@ -65,6 +64,7 @@ def menu(user):
             Cart.cart_menu(user)
             menu(user)
         elif choice == "3":
+            transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
             transaction.process(user)
         elif choice == "4":
             print("Exiting Menu")
