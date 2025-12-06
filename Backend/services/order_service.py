@@ -1,19 +1,20 @@
 from utlities.format_items_table import print_items_table
-from db.repositories.transaction_repository import insert_order, insert_order_items
+from db.repositories.transaction_repository import insert_order, insert_order_items, reduce_stock
 
 class OrderService():
-
     @staticmethod
-    def complete_order(order):
+    def insert_order(order):
         order_id = insert_order(order)
         if order_id:
             order.order_no = order_id
             insert_order_items(order_id, order.items)
-            print("\nOrder completed successfully.")
             return True
         return False
-        
-        
+    
+    @staticmethod
+    def reduce_stock(order):
+        return reduce_stock(order)
+            
 
     @staticmethod
     def checkout(user):
@@ -23,7 +24,7 @@ class OrderService():
         order = user.cart.checkout()
         order.order_summary()
         return order
-    
+
     @staticmethod
     def order_summary(order):
         print("\n------Order Summary------:")
