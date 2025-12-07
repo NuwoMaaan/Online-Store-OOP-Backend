@@ -59,10 +59,8 @@ def menu(user):
         
         if choice == "1":
             Catalogue.catalogue_menu(user)
-            menu(user)
         elif choice == "2":
             Cart.cart_menu(user)
-            menu(user)
         elif choice == "3":
             transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
             transaction.process(user)
@@ -82,7 +80,6 @@ def staff_menu(user):
 
         if choice == "1":
             Catalogue.catalogue_staff()
-            staff_menu(user)
         elif choice == "2":
             #generate_report() - Not implemented
             pass
@@ -96,5 +93,4 @@ def staff_menu(user):
     
 
 if __name__ == "__main__":
-
     main()
