@@ -3,7 +3,6 @@ from models.PAYMENT.PaypalPaymentMethod import PaypalPaymentMethod
 
 
 class PaymentFactory:
-
     @staticmethod
     def create_payment_factory(order):
         factories = {
@@ -31,8 +30,6 @@ class PaymentFactory:
         try:
             payment = factory.create_payment(**kwargs)
             payment.process()
-            # payment.validate()
-            # payment.pay()
             return payment
         except ValueError as e:
             print(f"Payment failed: {e}")

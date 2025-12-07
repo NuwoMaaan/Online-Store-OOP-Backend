@@ -1,4 +1,3 @@
-
 from db.connection.helper import get_cursor
 
 def create_user(user_data: dict) -> int | None:
