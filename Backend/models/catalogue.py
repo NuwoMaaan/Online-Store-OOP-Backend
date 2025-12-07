@@ -2,7 +2,7 @@ from typing import List
 from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
-from db.repositories.item_repository import get_all_items
+from db.repositories.item_repository import get_all_items_db
 
 class Catalogue():
     __instance = None
@@ -19,7 +19,7 @@ class Catalogue():
         return Catalogue.__instance
 
     def load_items(self) -> list[Item]:
-        item_list = get_all_items()
+        item_list = get_all_items_db()
         if item_list:
             items = []
             for item in item_list:

@@ -26,9 +26,9 @@ def get_item_by_id(item_id: int) -> dict[str, int] | None:
         item = cur.fetchone()
         return item
 
-def get_all_items() -> list[dict[str, int]]:
+def get_all_items_db() -> list[dict[str, int]]:
     with get_cursor() as cur:
-        sql = "SELECT id, name, price FROM item"
+        sql = "SELECT id, name, price, quantity FROM item WHERE quantity > 0"
         cur.execute(sql)
         items = cur.fetchall()
         return items
