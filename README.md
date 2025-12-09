@@ -168,8 +168,8 @@ SHOW TABLES;
 - Use `docker compose run --rm backend` instead of `docker compose up backend`
 
 ### Need to remove docker containers & volume
+exit the terminal application (through menu or `ctrl + c`)
 ```powershell
-exit terminal application
 docker compose down
 docker volume rm online-store-backend_db_data
 ```
