@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  MySQL:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3333:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Pa55w.rd 
+      MYSQL_DATABASE: online_store
+      MYSQL_USER: appuser 
+      MYSQL_PASSWORD: Pa55w.rd 
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./Backend/db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - database_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile   
+    depends_on:
+      - MySQL
+    environment:
+      HOST: MySQL
+      USER: appuser
+      PASSWORD: Pa55w.rd
+      NAME: online_store
+      POOL_SIZE: 5
+    stdin_open: true
+    tty: true
+    networks:
+      - database_network
+
+volumes:
+  db_data:
+
+networks:
+  database_network: 
+    driver: bridge
