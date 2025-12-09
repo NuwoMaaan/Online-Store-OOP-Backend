@@ -26,7 +26,8 @@ services:
       context: .
       dockerfile: Backend/Dockerfile   
     depends_on:
-      - MySQL
+      MySQL:
+        condition: service_healthy
     environment:
       HOST: MySQL
       USER: appuser
