@@ -1,5 +1,4 @@
 from models.user import Customer, Staff
-import json
 import hashlib
 import getpass
 from db.repositories.user_repository import create_user, get_user_by_username

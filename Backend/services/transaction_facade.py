@@ -1,5 +1,5 @@
 
-class TransactionFacade:
+class TransactionFacade():
     def __init__(self, order_service, payment_service, sales_service, cart_service):
         self.order_service = order_service
         self.payment_service = payment_service

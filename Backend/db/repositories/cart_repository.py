@@ -1,5 +1,4 @@
 from db.connection.helper import get_cursor
-from models.item import Item
 from typing import List
 
 def create_cart(user_id: int) -> None:

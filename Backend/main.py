@@ -1,4 +1,4 @@
-from models.user import User, Customer, Staff
+from models.user import Customer, Staff
 from models.catalogue import Catalogue
 from models.cart import Cart
 from services.transaction_facade import TransactionFacade
@@ -88,9 +88,6 @@ def staff_menu(user):
             break
         else:
             print(f"Unknown option: {choice}") 
-
-    
-    
 
 if __name__ == "__main__":
     main()

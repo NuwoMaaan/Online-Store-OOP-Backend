@@ -1,10 +1,6 @@
-import datetime
-import random
 from utlities.format_items_table import print_items_table
 
-
 class SalesDocument():
-
     def generate_sales_document(self, order):
         print("\n------Inoivce Receipt-------")
         print(f"Inoice Number: #{order.order_no}, Customer ID: {order.customer_id}")
