@@ -1,4 +1,3 @@
-from typing import List
 from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
@@ -9,7 +8,7 @@ class Catalogue():
     def __init__(self):
         if Catalogue.__instance is not None:
             raise Exception("Singleton class cannot be instantiated more than once.")
-        self.items: List[Item] = self.load_items()
+        self.items: list[Item] = self.load_items()
         Catalogue.__instance = self
 
     @staticmethod
@@ -20,13 +19,18 @@ class Catalogue():
 
     def load_items(self) -> list[Item]:
         item_list = get_all_items_db()
-        if item_list:
-            items = []
-            for item in item_list:
-                # Dont include quantity to construct Item
-                item_data = {k: v for k, v in item.items() if k != "quantity"}
-                items.append(Item(**item_data))
-            return items
+        if not item_list:
+            return []
+        
+        domain_items = []
+        for item in item_list:
+            item = Item(
+                id=item.id,
+                name=item.name,
+                price=item.price
+            )
+            domain_items.append(item)
+        return domain_items
     
     def get_item_by_id(self, item_id) -> Item | None:
         return next((item for item in self.items if item.id == item_id), None)

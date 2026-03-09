@@ -25,7 +25,7 @@ class CatalogueService():
 
         new_id = create_item(name, price, quantity)
         if new_id:
-            print(f"\nItem - '{name}' added to catalogue with ID - {new_id}.")
+            print(f"\nItem - '{name}' added to catalogue with ID - {new_id}, quantity: {quantity}.")
 
         # new_item_obj = Item(new_id, name, price)
         # catalogue.items.append(new_item_obj) 
