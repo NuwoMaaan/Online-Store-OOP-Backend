@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: Pa55w.rd 
     volumes:
       - db_data:/var/lib/mysql
-      - ./Backend/db/init:/docker-entrypoint-initdb.d
+      # - ./Backend/db/init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 5s

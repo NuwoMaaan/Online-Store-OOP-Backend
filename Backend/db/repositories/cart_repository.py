@@ -1,59 +1,52 @@
-from db.connection.helper import get_cursor
+from Backend.db.connection.session import get_session
+from sqlalchemy import delete
+from models import Cart, CartItems, User
 from typing import List
 
 def create_cart(user_id: int) -> None:
-    with get_cursor() as cur:
-        sql = "INSERT INTO cart (user_id) VALUES (%s)"
-        cur.execute(sql, (user_id,))
-        #return cur.lastrowid
+    with get_session() as db:
+        new_cart = Cart(user_id)
+        db.add(new_cart)
 
-def get_cart_by_user_id(user_id: int) -> dict[str, int] | None:
-    with get_cursor() as cur:
-        sql = "SELECT cart_id, user_id FROM cart WHERE user_id = %s"
-        cur.execute(sql, (user_id,))
-        cart = cur.fetchone()
+
+def get_cart_by_user_id(user_id: int) -> Cart | None:
+    with get_session() as db:
+        cart = db.query(Cart).filter(Cart.user_id == user_id).first()
+        if not cart:
+            return None
         return cart
+    
 
 def remove_all_items(cart_id: int) -> None:
-    with get_cursor() as cur:
-        sql = "DELETE FROM cart_items WHERE cart_id = %s"
-        cur.execute(sql, (cart_id,))
+    with get_session() as db:
+        sql = delete(CartItems).where(CartItems.cart_id == cart_id)
+        db.execute(sql)
+
 
 def decrement_item_quantity(cart_id: int, item_id: int) -> None:
-    with get_cursor() as cur:
-        sql = "SELECT quantity FROM cart_items WHERE cart_id = %s AND item_id = %s"
-        cur.execute(sql, (cart_id, item_id))
-        row = cur.fetchone()
-        if not row:
+    with get_session() as db:
+        item = db.query(CartItems).filter_by(cart_id=cart_id, item_id=item_id).first()
+        if not item:
             return
-        new_qty = row["quantity"] - 1
-        if new_qty > 0:
-            sql = "UPDATE cart_items SET quantity = %s WHERE cart_id = %s AND item_id = %s"
-            cur.execute(sql, (new_qty, cart_id, item_id))
+   
+        if item.quantity > 1:
+            item.quantity -= 1
         else:
-            sql = "DELETE FROM cart_items WHERE cart_id = %s AND item_id = %s"
-            cur.execute(sql, (cart_id, item_id))
+            db.delete(item)
+
 
 def increment_item_quantity(cart_id: int, item_id: int) -> None:
-    with get_cursor() as cur:
-        sql = "SELECT quantity FROM cart_items WHERE cart_id = %s AND item_id = %s"
-        cur.execute(sql, (cart_id, item_id))
-        row = cur.fetchone()
-        if not row:
-            sql = "INSERT INTO cart_items (cart_id, item_id, quantity) VALUES (%s, %s, %s)"
-            cur.execute(sql, (cart_id, item_id, 1))
-            return
-        new_qty = row["quantity"] + 1
-        sql = "UPDATE cart_items SET quantity = %s WHERE cart_id = %s AND item_id = %s"
-        cur.execute(sql, (new_qty, cart_id, item_id))
+    with get_session() as db:
+        item = db.query(CartItems).filter_by(cart_id=cart_id, item_id=item_id).first()
+        if item:
+            item.quantity += 1
+        else:
+            new_item = CartItems(cart_id=cart_id, item_id=item_id, quantity=1)
+            db.add(new_item)
 
 
-def load_cart_db(cart_id: int) -> List[dict[str, int]] | None:
-    with get_cursor() as cur:
-        sql = "SELECT item_id, quantity FROM cart_items WHERE cart_id = %s"
-        cur.execute(sql, (cart_id,))
-        cart = cur.fetchall()
-        if not cart:
-            return
-        return cart
+def load_cart_db(cart_id: int) -> List[CartItems] | None:
+    with get_session() as db:
+        cart_items = db.query(CartItems.item_id, CartItems.quantity).filter_by(cart_id=cart_id).all()
+        return cart_items
         
