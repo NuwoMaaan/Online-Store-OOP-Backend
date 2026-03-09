@@ -3,9 +3,6 @@ from models.catalogue import Catalogue
 from models.cart import Cart
 from services.transaction_facade import TransactionFacade
 from services.cart_service import CartService
-from services.payment_service import PaymentService
-from services.sales_service import SalesService
-from services.order_service import OrderService
 from services.user_service import UserService
 
 def banner():
@@ -62,7 +59,7 @@ def menu(user):
         elif choice == "2":
             Cart.cart_menu(user)
         elif choice == "3":
-            transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
+            transaction = TransactionFacade()
             transaction.process(user)
         elif choice == "4":
             print("Exiting Menu")

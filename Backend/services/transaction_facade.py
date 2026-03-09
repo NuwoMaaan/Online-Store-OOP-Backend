@@ -1,10 +1,14 @@
+from services.order_service import OrderService 
+from services.payment_service import PaymentService
+from services.sales_service import SalesService
+from services.cart_service import CartService
 
 class TransactionFacade():
-    def __init__(self, order_service, payment_service, sales_service, cart_service):
-        self.order_service = order_service
-        self.payment_service = payment_service
-        self.sales_service = sales_service
-        self.cart_service = cart_service
+    def __init__(self):
+        self.order_service = OrderService()
+        self.payment_service = PaymentService()
+        self.sales_service = SalesService()
+        self.cart_service = CartService()
 
     def process(self, user):
         order = self.order_service.checkout(user)
