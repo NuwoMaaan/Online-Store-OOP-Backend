@@ -42,8 +42,8 @@ def main():
                 staff_menu(user)
 
         elif command == "2":
-            new_user = UserService.create_new_user()
-            if new_user is None:
+            new_user_id = UserService.create_new_user()
+            if new_user_id is None:
                 print("Failed account creation")     
         else:
             print(f"Unknown command: {command}")

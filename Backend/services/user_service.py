@@ -26,27 +26,27 @@ class UserService():
         password = getpass.getpass("Enter password: ")
 
         user = get_user_by_username(username)
-        if user is not None and UserService.verify_password(user["password"], password):
+        if user is not None and UserService.verify_password(user.password, password):
             print(f"Login successful. Welcome, {username}!")
-            if user["role"] == "customer":
+            if user.role == "customer":
                 return Customer(**user)
-            elif user["role"] == "staff":
+            elif user.role == "staff":
                 return Staff(**user)
             else:
-                print(f"Unknown role: '{user['role']}' for user {username}")
+                print(f"Unknown role: '{user.role}' for user {username}")
                 return None
         print("Login failed. username or password incorrect.")
         return None
 
     @staticmethod
-    def create_new_user() -> dict | None:
+    def create_new_user() -> int | None:
         print("======NEW CUSTOMER ACCOUNT CREATION======")
         email = input("Enter email: ")
         username = input("Enter username: ")
         password = UserService.hash_password(input("Enter password: "))
         confirm = input("Enter 'c' to proceed, 'q' to abort: ").strip().lower()
         if confirm == 'q':
-            return print("User creation p rocesses aborted.")
+            return print("User creation processes aborted.")
         elif confirm == 'c':
             if '@' in email:
                 if get_user_by_username(username) is not None:
