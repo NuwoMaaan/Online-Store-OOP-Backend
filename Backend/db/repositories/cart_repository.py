@@ -1,11 +1,11 @@
-from Backend.db.connection.session import get_session
+from db.connection.session import get_session
 from sqlalchemy import delete
-from models import Cart, CartItems, User
+from db.models import Cart, CartItems
 from typing import List
 
 def create_cart(user_id: int) -> None:
     with get_session() as db:
-        new_cart = Cart(user_id)
+        new_cart = Cart(user_id=user_id)
         db.add(new_cart)
 
 

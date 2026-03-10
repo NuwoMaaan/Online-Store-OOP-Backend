@@ -1,6 +1,10 @@
+from __future__ import annotations
 from utlities.format_items_table import print_items_table
 from db.repositories.transaction_repository import insert_order, insert_order_items, reduce_stock
-from models.order import Order
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.order import Order
 
 class OrderService():
     @staticmethod

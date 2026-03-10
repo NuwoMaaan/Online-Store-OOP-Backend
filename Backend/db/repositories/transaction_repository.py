@@ -1,7 +1,11 @@
+from __future__ import annotations
 from db.connection.session import get_session
-from models.order import Order
-from models import Orders, OrderItems, Item
+from db.models import Orders, OrderItems, Item
 from collections import Counter
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.order import Order
 
 def insert_order(order: Order) -> int:
     with get_session() as db:

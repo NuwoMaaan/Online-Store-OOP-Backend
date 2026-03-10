@@ -1,8 +1,12 @@
-from models.user import Customer, Staff
+from __future__ import annotations
 import hashlib
 import getpass
 from db.repositories.user_repository import create_user, get_user_by_username
 from db.repositories.cart_repository import create_cart
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.user import Customer, Staff
 
 class UserService():
     @staticmethod

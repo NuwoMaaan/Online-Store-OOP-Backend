@@ -1,6 +1,5 @@
 from db.connection.session import get_session
 from db.models import Item
-from sqlalchemy import update
 
 def create_item(name: str, price: float, quantity: int) -> int | None:
     with get_session() as db:

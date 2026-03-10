@@ -4,6 +4,7 @@ from models.cart import Cart
 from services.transaction_facade import TransactionFacade
 from services.cart_service import CartService
 from services.user_service import UserService
+from init import initialize_database
 
 def banner():
     print(r"""
@@ -87,4 +88,5 @@ def staff_menu(user):
             print(f"Unknown option: {choice}") 
 
 if __name__ == "__main__":
+    initialize_database()
     main()
