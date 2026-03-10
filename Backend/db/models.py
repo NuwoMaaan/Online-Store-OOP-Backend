@@ -1,11 +1,14 @@
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy import Integer, String, Numeric, ForeignKey, DateTime
-
+from sqlalchemy.inspection import inspect
 from datetime import datetime
 
 
 class Base(DeclarativeBase):
-    pass
+    def __iter__(self):
+        # Allows dict(obj) or **obj unpacking
+        for c in inspect(self).mapper.column_attrs:
+            yield c.key, getattr(self, c.key)
 
 class User(Base):
     __tablename__ = "user"

@@ -1,12 +1,12 @@
-from __future__ import annotations
+# from __future__ import annotations
 import hashlib
 import getpass
 from db.repositories.user_repository import create_user, get_user_by_username
 from db.repositories.cart_repository import create_cart
-from typing import TYPE_CHECKING
+from db.connection.session import get_session
+from models.user import Customer, Staff
+# from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from models.user import Customer, Staff
 
 class UserService():
     @staticmethod
@@ -28,19 +28,19 @@ class UserService():
     def login() -> Customer | Staff | None:
         username = input("Enter username: ")
         password = getpass.getpass("Enter password: ")
-
-        user = get_user_by_username(username)
-        if user is not None and UserService.verify_password(user.password, password):
-            print(f"Login successful. Welcome, {username}!")
-            if user.role == "customer":
-                return Customer(**user)
-            elif user.role == "staff":
-                return Staff(**user)
-            else:
-                print(f"Unknown role: '{user.role}' for user {username}")
-                return None
-        print("Login failed. username or password incorrect.")
-        return None
+        with get_session() as db:
+            user = get_user_by_username(username, db)
+            if user is not None and UserService.verify_password(user.password, password):
+                print(f"Login successful. Welcome, {username}!")
+                if user.role == "customer":
+                    return Customer(**dict(user))
+                elif user.role == "staff":
+                    return Staff(**dict(user))
+                else:
+                    print(f"Unknown role: '{user.role}' for user {username}")
+                    return None
+            print("Login failed. username or password incorrect.")
+            return None
 
     @staticmethod
     def create_new_user() -> int | None:

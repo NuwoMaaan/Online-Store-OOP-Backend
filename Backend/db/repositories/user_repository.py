@@ -9,10 +9,9 @@ def create_user(user_data: dict) -> int:
         return new_user.user_id
 
 
-def get_user_by_username(username: str) -> User | None:
-    with get_session() as db:
-        user = db.query(User).filter(User.username == username).first()
-        return user
+def get_user_by_username(username: str, db) -> User | None:
+    user = db.query(User).filter(User.username == username).first()
+    return user
         
 # def get_user_by_username(username: str) -> dict | None:
 #     with get_cursor() as cur:
