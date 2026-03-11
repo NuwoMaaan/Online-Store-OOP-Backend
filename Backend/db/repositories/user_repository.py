@@ -1,9 +1,13 @@
-from db.connection.session import get_session
 from db.models import User
 
-def create_user(user_data: dict) -> int:
-    with get_session() as db:
-        new_user = User(**user_data)
+
+def create_user(user_data: dict, db) -> int:
+        new_user = User(
+              username=user_data["username"],
+              password=user_data["password"],
+              role=user_data["role"],
+              email=user_data["email"]
+        )
         db.add(new_user)
         db.flush() 
         return new_user.user_id

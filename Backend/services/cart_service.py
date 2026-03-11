@@ -36,7 +36,7 @@ class CartService():
         with get_session() as db:
             cart = get_cart_by_user_id(cart_instance.customer_id, db)
             if cart:
-                cart_items = load_cart_db(cart.cart_id)
+                cart_items = load_cart_db(cart.cart_id, db)
                 if cart_items:
                     catalogue = Catalogue.get_instance() 
                     for item in cart_items:

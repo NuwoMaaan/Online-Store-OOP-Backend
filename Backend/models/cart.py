@@ -4,7 +4,6 @@ from models.order import Order
 from services.cart_service import CartService
 from services.transaction_facade import TransactionFacade 
 
-transaction = TransactionFacade()
 
 class Cart:
     def __init__(self, customer_id: int):
@@ -75,6 +74,7 @@ class Cart:
                 except ValueError:
                     print("Invalid input. Please enter a valid number.")
             elif menu_choice == 'c':
+                transaction = TransactionFacade()
                 transaction.process(user)
                 break
             elif menu_choice == 'q':

@@ -37,22 +37,23 @@ class UserService():
         if confirm == 'q':
             return print("User creation processes aborted.")
         elif confirm == 'c':
-            if '@' in email:
-                if get_user_by_username(username) is not None:
-                    print("Username already exists.")
+            with get_session() as db:
+                if '@' in email:
+                    if get_user_by_username(username, db) is not None:
+                        print("Username already exists.")
+                        return None
+                    new_user = {"username": username,
+                                "email": email,
+                                "role": "customer",
+                                "password": password}
+                    new_id = create_user(new_user, db)
+                    if new_id:
+                        print(f"Account created for: {username}")
+                        create_cart(new_id, db)
+                        return new_id
+                if '@' not in email:
+                    print("Invalid email. Must contain '@'")
                     return None
-                new_user = {"username": username,
-                            "email": email,
-                            "role": "customer",
-                            "password": password}
-                new_id = create_user(new_user)
-                if new_id:
-                    print(f"Account created for: {username}")
-                    create_cart(new_id)
-                    return new_id
-            if '@' not in email:
-                print("Invalid email. Must contain '@'")
-                return None
         else:
             return None
         

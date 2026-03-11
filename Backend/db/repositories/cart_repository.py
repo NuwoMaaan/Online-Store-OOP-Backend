@@ -1,10 +1,8 @@
-from db.connection.session import get_session
 from sqlalchemy import delete
 from db.models import Cart, CartItems
 from typing import List
 
-def create_cart(user_id: int) -> None:
-    with get_session() as db:
+def create_cart(user_id: int, db) -> None:
         new_cart = Cart(user_id=user_id)
         db.add(new_cart)
 
@@ -41,8 +39,7 @@ def increment_item_quantity(cart_id: int, item_id: int, db) -> None:
         db.add(new_item)
 
 
-def load_cart_db(cart_id: int) -> List[CartItems] | None:
-    with get_session() as db:
+def load_cart_db(cart_id: int, db) -> List[CartItems] | None:
         cart_items = db.query(CartItems.item_id, CartItems.quantity).filter_by(cart_id=cart_id).all()
         return cart_items
         

@@ -1,4 +1,3 @@
-from db.connection.session import get_session
 from db.models import Item
 
 def create_item(name: str, price: float, quantity: int, db) -> int | None:
