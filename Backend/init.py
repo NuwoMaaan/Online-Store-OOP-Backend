@@ -23,7 +23,7 @@ def seed_data():
             admin = User(
                 username=settings.ADMIN_USER,
                 password=settings.ADMIN_PASSWORD,
-                role="admin",
+                role="staff",
                 email="admin@outlook.com"
             )
             db.add(admin)
