@@ -1,33 +1,18 @@
-# from __future__ import annotations
 import hashlib
 import getpass
 from db.repositories.user_repository import create_user, get_user_by_username
 from db.repositories.cart_repository import create_cart
 from db.connection.session import get_session
 from models.user import Customer, Staff
-# from typing import TYPE_CHECKING
 
 
 class UserService():
-    @staticmethod
-    def check_instance(user) -> bool | None:
-        if user is None:
-            print("Login failed. Please try again.")
-        else:
-            if isinstance(user, Customer):
-                user.cart.load_cart()
-                return True
-            elif isinstance(user, Staff):
-                print("Logged in as Staff.")
-                return False
-            else:
-                print("Unknown user type.")
-            return None
-        
+    
     @staticmethod
     def login() -> Customer | Staff | None:
         username = input("Enter username: ")
         password = getpass.getpass("Enter password: ")
+        
         with get_session() as db:
             user = get_user_by_username(username, db)
             if user is not None and UserService.verify_password(user.password, password):
