@@ -8,20 +8,20 @@ if TYPE_CHECKING:
 
 class OrderService():
     @staticmethod
-    def insert_order(order) -> bool:
-        order_id = insert_order(order)
-        if order_id:
-            order.order_no = order_id
-            if insert_order_items(order_id, order.items):
-                return True
+    def insert_order(order, db) -> bool:
+        order_id = insert_order(order, db)
+        if not order_id:
             return False
+        
+        order.order_no = order_id
+        if insert_order_items(order_id, order.items, db):
+            return True
         return False
     
     
     @staticmethod
-    def reduce_stock(order) -> bool:
-        return reduce_stock(order)
-            
+    def reduce_stock(order, db) -> bool:
+        return reduce_stock(order, db)
 
     @staticmethod
     def checkout(user) -> Order:
