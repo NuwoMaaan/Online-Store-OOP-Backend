@@ -3,49 +3,29 @@
 OOP-built backend using Python for a simple online store. This project provides a terminal-based interface to:
 - Create a customer account
 - browse a product catalogue
-- add/remove items from a shopping cart 
-- checkout and process payments (card / PayPal)
-- persist orders and carts (MySQL-backed repository layer)
+- add/remove items from a shopping cart
+- add/remove items from catalogue (admin)
+- checkout and process payments
+- persist orders and carts 
 
-The codebase is organised with a clear separation between domain models, services, and repository/DB access. It is intended as a learning/demo backend rather than a production-ready service.
+The project has a focus on scalable and clean design & architecture when building systems. The project follows a service-oriented architecture with domain and database logic separated from class models and repositioned in service & repository layer. Technologies; MySQL relation-database, SQL Alchemy ORM, and Docker.
 
-**This README** covers architecture, running locally, running with Docker, and the repository layout.
+(Note: This is not a production-level system and is only for demo & learning purposes)
 
 ## Quick Start
 
 ### Docker (Recommended)
 
 Run the interactive backend directly (attach a TTY):
-```powershell
+```
 docker compose run --rm backend
 ```
+Backend may fail to connect to MySQL container because it is not yet healthly, rerun the same command to attempt restart. Alternatively, start the MySQL container separately first.
+
 MySQL database is seeded with two users:
 - (**username**: as below, **password** = password)
 - Customer: leo
 - Staff: admin
-
-### Local (Without Docker)
-
-Create a .env file
-```powershell
-EXAMPLE:
-HOST=localhost
-USER=root
-PASSWORD=password
-DATABASE=online_store_database
-POOL_SIZE=5
-```
-
-Create a Python virtualenv and install dependencies:
-```powershell
-python -m venv .venv
-# Windows PowerShell
-.\.venv\Scripts\Activate
-pip install -r Backend/requirements.txt
-python Backend/main.py
-```
-
-Note: The backend expects a MySQL database running locally on port 3306. See `Backend/db/init` for init MySQL database schema and seed.
 
 ## Running & Interactivity
 
@@ -53,27 +33,7 @@ When interacting with Docker — run the `backend` service with a TTY (from the 
 
 **Do not use** `docker compose up -d` (detached mode) for an interactive CLI app — you won't be able to provide input.
 
-## Environment Configuration
-
-**Docker environment variables** (set in `docker-compose.yml`):
-- `MYSQL_ROOT_PASSWORD` — root DB password (set for MySQL container)
-- `MYSQL_DATABASE` — database name created by MySQL container (default: `online_store`)
-- `MYSQL_USER`, `MYSQL_PASSWORD` — optional DB user created on initialization
-- `HOST` — database host (Docker service name: `MySQL`)
-- `USER` — database user (default: `appuser`)
-- `PASSWORD` — database password
-- `NAME` — database name (default: `online_store`)
-- `POOL_SIZE` — connection pool size (default: 5)
-
-## Database Setup
-
-If DB init scripts change: the MySQL image runs SQL files in `Backend/db/init` only when the volume is empty. To re-run init scripts:
-
-```powershell
-docker compose down
-docker volume rm online-store-backend_db_data
-docker compose run --rm backend
-```
+## Database 
 
 To inspect the database inside a running container:
 ```powershell
@@ -85,6 +45,7 @@ docker exec -it <mysql_container_id> sh
 mysql -p (password: Pa55w.rd)
 USE online_store;
 SHOW TABLES;
+SELECT * FROM <table>;
 ```
 
 ## Architecture & Design
@@ -105,6 +66,7 @@ SHOW TABLES;
 - **Strategy / Polymorphism**: Payment implementations in `Backend/models/PAYMENT/`
 - **Facade**: `TransactionFacade` — orchestrates checkout, payment, and sales workflows
 - **Repository**: `Backend/db/repositories/` — abstracts DB access from services
+- **Dependency injection**: `SQL Alchemy Session` - pass in database session context into functions
 
 ## Directory Structure
 
@@ -115,12 +77,14 @@ SHOW TABLES;
 ├── Backend/
 │   ├── Dockerfile
 │   ├── main.py
+│   ├── config.py
+│   ├── init.py
 │   ├── requirements.txt
 │   ├── db/
+│   │   ├── models.py
 │   │   ├── connection/
-│   │   │   ├── config.py
 │   │   │   ├── connection.py
-│   │   │   └── helper.py
+│   │   │   └── session.py
 │   │   ├── init/
 │   │   │   ├── 001-schema.sql
 │   │   │   └── 002-seed.sql
@@ -161,8 +125,8 @@ SHOW TABLES;
 
 ### Backend cannot connect to database
 - Ensure the MySQL container is healthy: `docker compose ps`
-- Check logs: `docker compose logs MySQL` or `docker compose logs backend`
-- Verify DB is seeded: exec into the container and query the `user` table
+- Check logs: `docker compose logs mysql` or `docker compose logs backend`
+- Verify DB is seeded: exec into the container and query the `user` and `item` table
 
 ### Cannot type input in Docker
 - Use `docker compose run --rm backend` instead of `docker compose up backend`
