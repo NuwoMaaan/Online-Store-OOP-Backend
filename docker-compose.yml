@@ -34,6 +34,8 @@ services:
       PASSWORD: Pa55w.rd
       NAME: online_store
       POOL_SIZE: 5
+      ADMIN_USER: admin
+      ADMIN_PASSWORD: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
     stdin_open: true
     tty: true
     networks:
