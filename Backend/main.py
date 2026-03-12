@@ -3,10 +3,8 @@ from models.catalogue import Catalogue
 from models.cart import Cart
 from services.transaction_facade import TransactionFacade
 from services.cart_service import CartService
-from services.payment_service import PaymentService
-from services.sales_service import SalesService
-from services.order_service import OrderService
 from services.user_service import UserService
+from init import initialize_database
 
 def banner():
     print(r"""
@@ -42,8 +40,8 @@ def main():
                 staff_menu(user)
 
         elif command == "2":
-            new_user = UserService.create_new_user()
-            if new_user is None:
+            new_user_id = UserService.create_new_user()
+            if new_user_id is None:
                 print("Failed account creation")     
         else:
             print(f"Unknown command: {command}")
@@ -62,7 +60,7 @@ def menu(user):
         elif choice == "2":
             Cart.cart_menu(user)
         elif choice == "3":
-            transaction = TransactionFacade(OrderService(), PaymentService(), SalesService(), CartService())
+            transaction = TransactionFacade()
             transaction.process(user)
         elif choice == "4":
             print("Exiting Menu")
@@ -90,4 +88,5 @@ def staff_menu(user):
             print(f"Unknown option: {choice}") 
 
 if __name__ == "__main__":
+    initialize_database()
     main()

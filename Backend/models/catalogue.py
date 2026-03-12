@@ -1,15 +1,13 @@
-from typing import List
 from models.item import Item
 from utlities.format_items_table import print_items_table
 from services.catalogue_service import CatalogueService
-from db.repositories.item_repository import get_all_items_db
 
 class Catalogue():
     __instance = None
     def __init__(self):
         if Catalogue.__instance is not None:
             raise Exception("Singleton class cannot be instantiated more than once.")
-        self.items: List[Item] = self.load_items()
+        self.items: list[Item] = self.load_items()
         Catalogue.__instance = self
 
     @staticmethod
@@ -19,14 +17,8 @@ class Catalogue():
         return Catalogue.__instance
 
     def load_items(self) -> list[Item]:
-        item_list = get_all_items_db()
-        if item_list:
-            items = []
-            for item in item_list:
-                # Dont include quantity to construct Item
-                item_data = {k: v for k, v in item.items() if k != "quantity"}
-                items.append(Item(**item_data))
-            return items
+        items = CatalogueService.load_items()
+        return items
     
     def get_item_by_id(self, item_id) -> Item | None:
         return next((item for item in self.items if item.id == item_id), None)
@@ -47,6 +39,7 @@ class Catalogue():
     def catalogue_menu(user):
         catalogue = Catalogue.get_instance()
         while True:
+            catalogue.items = catalogue.load_items()
             catalogue.view_catalogue()
             item_id = input("Enter item ID to add to cart (or 'q' to quit): ").strip()
             if item_id.lower() == 'q':
@@ -66,6 +59,7 @@ class Catalogue():
     def catalogue_staff():
         catalogue = Catalogue.get_instance() 
         while True:
+            catalogue.items = catalogue.load_items()
             choice = input("\n1 - 'add' new Item\n2 - 'remove' Item\nq - quit\nchoice: ").strip().lower()
             if choice == 'q':
                 break
