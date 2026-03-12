@@ -56,7 +56,7 @@ SELECT * FROM <table>;
 - **Models**: `Backend/models/` (domain objects: `Cart`, `Order`, `Item`, `User`, `Catalogue`)
 - **Services**: `Backend/services/` (business logic: `CartService`, `OrderService`, `PaymentService`, `TransactionFacade`)
 - **Repositories**: `Backend/db/repositories/` (SQL access wrappers, data persistence)
-- **DB Connection**: `Backend/db/connection/` (connection pooling and cursor helpers)
+- **DB Connection**: `Backend/db/connection/` (ORM session context)
 - **Utilities**: `Backend/utlities/` (helper functions, formatting)
 
 ### Design Patterns
