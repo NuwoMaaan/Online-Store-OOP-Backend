@@ -23,8 +23,8 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: Backend/Dockerfile   
+      context: ./Backend
+      dockerfile: Dockerfile   
     depends_on:
       mysql:
         condition: service_healthy

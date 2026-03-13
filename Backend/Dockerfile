@@ -1,30 +1,25 @@
-# Use a slim Python image
-FROM python:3.11-slim
 
-# Avoid buffering stdout/stderr
-ENV PYTHONUNBUFFERED=1
+FROM python:3.14-slim AS build
 
-# Create app dir and set it as working dir
+# Copy the uv binary
+COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /usr/bin/uv
+
+# Set workdir and install dependencies
 WORKDIR /app
+ENV UV_LINK_MODE=copy
+COPY pyproject.toml uv.lock ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-install-project --no-dev
 
-# Install OS packages needed (if any). Keep minimal.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Copy app and sync
+COPY . .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-dev
 
-# Copy dependency file first for layer caching
-COPY Backend/requirements.txt ./requirements.txt
+# --- Runtime Stage ---
+FROM python:3.14-slim AS runtime
+WORKDIR /app
+COPY --from=build /app .
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Install python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY Backend/ ./
-
-# Set a non-root user (optional)
-# RUN useradd --create-home appuser
-# USER appuser
-
-# Default command: run the CLI app
-# Use -it when running to allow interactive input
-CMD ["python", "main.py"]
+CMD ["python", "-m", "main"]
