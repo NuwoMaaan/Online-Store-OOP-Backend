@@ -1,6 +1,6 @@
 
 from typing import List
-from datetime import datetime
+from datetime import UTC, datetime
 from services.order_service import OrderService
 
 
@@ -14,7 +14,7 @@ class Order:
         self.total: float = self.subtotal + self.shipping_cost
         self.status: str = "pending"     # or "paid"
         self.payment = None              # IPayment object
-        self.date_time: datetime = datetime.now()
+        self.date_time: datetime = datetime.now(tz=UTC)
         self.order_no: int = None        # to be set when saved to DB  
         
 
