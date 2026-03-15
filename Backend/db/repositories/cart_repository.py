@@ -2,9 +2,11 @@ from sqlalchemy import delete
 from db.models import Cart, CartItems
 from typing import List
 
-def create_cart(user_id: int, db) -> None:
+def create_cart(user_id: int, db) -> int | None :
         new_cart = Cart(user_id=user_id)
         db.add(new_cart)
+        db.flush()
+        return new_cart.cart_id
 
 
 def get_cart_by_user_id(user_id: int, db) -> Cart | None:
@@ -37,6 +39,7 @@ def increment_item_quantity(cart_id: int, item_id: int, db) -> None:
     else:
         new_item = CartItems(cart_id=cart_id, item_id=item_id, quantity=1)
         db.add(new_item)
+        db.flush()
 
 
 def load_cart_db(cart_id: int, db) -> List[CartItems] | None:

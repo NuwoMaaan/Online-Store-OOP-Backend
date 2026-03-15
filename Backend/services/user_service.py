@@ -49,8 +49,8 @@ class UserService():
                     new_id = create_user(new_user, db)
                     if new_id:
                         print(f"Account created for: {username}")
-                        create_cart(new_id, db)
-                        return new_id
+                        if create_cart(new_id, db):
+                            return new_id
                 if '@' not in email:
                     print("Invalid email. Must contain '@'")
                     return None
