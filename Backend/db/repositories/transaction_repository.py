@@ -65,7 +65,7 @@ def reduce_stock(order: Order, db) -> bool:
         item.quantity = 0
     return True
         
-
+# Helper function for reduce_stock()
 def remove_excess(order: Order, item_id: int, excess: int) -> None:
     removed = 0
     for o_item in list(order.items): 
