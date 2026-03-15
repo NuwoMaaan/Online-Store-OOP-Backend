@@ -79,7 +79,7 @@ SELECT * FROM <table>;
 │   ├── main.py
 │   ├── config.py
 │   ├── init.py
-│   ├── requirements.txt
+│   ├── tests/
 │   ├── db/
 │   │   ├── models.py
 │   │   ├── connection/
