@@ -15,21 +15,29 @@ class TransactionFacade():
         order = self.order_service.checkout(user)
         if not order:
             return
-            
-        user.orders.append(order)
+
         payment = self.payment_service.process(order)
         if not payment:
             print("Transaction failed.")
             return
-        order.add_payment(payment)
 
         with get_session() as db:
+            shortages = self.order_service.check_stock(order, db)
+            if shortages:
+                if self.order_service.adjust_order(shortages):
+                    self.order_service.adjust_order_for_shortages(order, shortages)
+
             success = self.order_service.reduce_stock(order, db)
             if not success:
-                raise Exception("Checkout cancelled")
+                raise Exception("Stock changed during checkout. Please try again.")
+
+            user.orders.append(order)
+            order.add_payment(payment)
+
             if self.order_service.insert_order(order, db):
                 self.sales_service.generate(order, payment)
                 print("\nOrder completed successfully.")
 
             user.orders.clear()
             user.cart.clear_cart()
+
