@@ -81,16 +81,3 @@ def check_stock(order: Order, db) -> list[dict]:
                 "exists": True
             })
     return shortages
-
-
-# Helper function for reduce_stock()
-def remove_excess(order: Order, item_id: int, excess: int) -> None:
-    removed = 0
-    for o_item in list(order.items): 
-        if removed >= excess:
-            break
-
-        if o_item.id == item_id:
-            order.items.remove(o_item)
-            removed += 1
-    

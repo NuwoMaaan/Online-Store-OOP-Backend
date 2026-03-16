@@ -3,7 +3,12 @@ from decimal import Decimal
 from db.models import Orders, OrderItems, Item
 from models.order import Order
 from models.item import Item as DomainItem
-from db.repositories.transaction_repository import insert_order, insert_order_items, reduce_stock, check_stock
+from db.repositories.transaction_repository import (
+    insert_order,
+    insert_order_items, 
+    reduce_stock, check_stock, 
+    remove_excess
+    )
 from db.repositories.item_repository import create_item
 
 
@@ -81,7 +86,3 @@ def test_check_stock_not_short(db_session, test_order):
     _ = create_item(item_name, item_price, item_quantity, db_session)
     shortage = check_stock(test_order, db_session)
     assert len(shortage) == 0
-    
-
-
-
