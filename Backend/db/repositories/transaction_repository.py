@@ -44,12 +44,7 @@ def reduce_stock(order: Order, db) -> bool:
     counter = Counter(item.id for item in order.items)
 
     for item_id, requested_qty in counter.items():
-        item = (
-            db.query(Item)
-            .filter(Item.id == item_id)
-            .with_for_update()
-            .first()
-        )
+        item = (db.query(Item).filter(Item.id == item_id).with_for_update().first())
         if not item or item.quantity < requested_qty:
             return False
         item.quantity -= requested_qty
