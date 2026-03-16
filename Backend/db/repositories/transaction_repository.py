@@ -45,34 +45,39 @@ def reduce_stock(order: Order, db) -> bool:
 
     for item_id, requested_qty in counter.items():
         item = (db.query(Item).filter(Item.id == item_id).with_for_update().first())
-        if not item:
-            print(f"Warning: Item {item_id} does not exist.")
-            continue
-
-        if item.quantity >= requested_qty:
-            item.quantity -= requested_qty
-            continue
-        # insufficient stock
-        print(
-            f"Insufficient stock for {item.name}. "
-            f"Requested {requested_qty}, available {item.quantity}"
-        )
-        choice = input("Continue with available stock? (y/n): ").lower().strip()
-        if choice != "y":
+        if not item or item.quantity < requested_qty:
             return False
-        # adjust order and deduct remaining stock
-        remove_excess(order, item_id, requested_qty - item.quantity)
-        item.quantity = 0
+        item.quantity -= requested_qty
     return True
-        
-# Helper function for reduce_stock()
-def remove_excess(order: Order, item_id: int, excess: int) -> None:
-    removed = 0
-    for o_item in list(order.items): 
-        if removed >= excess:
-            break
 
-        if o_item.id == item_id:
-            order.items.remove(o_item)
-            removed += 1
-    print(f"Removed {removed} items from order.")
+
+def check_stock(order: Order, db) -> list[dict]:
+    shortages = []
+    counter = Counter(item.id for item in order.items)
+
+    for item_id, requested_qty in counter.items():
+        item = db.query(Item).filter(Item.id == item_id).first()
+
+        if not item:
+            shortages.append({
+                "item_id": item_id,
+                "name": None,
+                "price": None,
+                "requested": requested_qty,
+                "available": 0,
+                "missing": requested_qty,
+                "exists": False
+            })
+            continue
+
+        if item.quantity < requested_qty:
+            shortages.append({
+                "item_id": item_id,
+                "name": item.name,
+                "price": item.price,
+                "requested": requested_qty,
+                "available": item.quantity,
+                "missing": requested_qty - item.quantity,
+                "exists": True
+            })
+    return shortages
